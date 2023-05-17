@@ -1,0 +1,325 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+syntax = "proto3";
+
+package uprotocol.core.usubscription.v2;
+
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+import "google/rpc/status.proto";
+import "google/rpc/code.proto";
+import "topic.proto";
+import "options.proto";
+
+option java_package = "org.eclipse.uprotocol.core.usubscription.v2";
+option java_outer_classname = "USubscriptionProto";
+option java_multiple_files = true;
+
+// Subscription Service Interface definition
+service uSubscription {
+  option (name) = "core.usubscription"; // Service name
+  option (version_major) = 2;
+  option (version_minor) = 0;
+  option (id) = 0;
+
+  // A consumer (application) calls this API to subscribe to a topic.
+  // What is passed is the SubscriptionRequest message containing the topic, the
+  // subscriber's name, and any Subscription Attributes. This API returns a
+  // SubscriptionResponse message containing the status of the request along with
+  // any event delivery configuration
+  // required to consume the event. Calling this API also registers the subscriber
+  // to received subscription change notifications if ever the subscription state
+  // changes.
+  rpc Subscribe(SubscriptionRequest) returns (SubscriptionResponse) {
+    option (method_id) = 1;
+  }
+
+  // The consumer no longer wishes to subscribe to a topic so it issues an
+  // explicit unsubscribe request.
+  rpc Unsubscribe(UnsubscribeRequest) returns (google.rpc.Status) {
+    option (method_id) = 2;
+  }
+
+  // Fetch a list of subscriptions
+  rpc FetchSubscriptions(FetchSubscriptionsRequest) returns (FetchSubscriptionsResponse) {
+    option (method_id) = 3;
+  }
+
+
+  //  API called by producers to register a topic. This API
+  // informs the Subscription Service that to create the topic and it is ready to publish.
+  rpc CreateTopic(CreateTopicRequest) returns (google.rpc.Status) {
+    option (method_id) = 4;
+  }
+
+  // Request deprecation of a topic. Producers call this to inform the uSubscription
+  // that it will no longer produce to said topic. The topic is flagged as deprcated
+  // which
+  rpc DeprecateTopic(DeprecateTopicRequest) returns (google.rpc.Status) {
+    option (method_id) = 5;
+  }
+
+  // Register to receive subscription change notifications that are published on the
+  // 'up:/core.usubscription/2/subscriptions#Update'
+  rpc RegisterForNotifications(NotificationsRequest) returns (google.rpc.Status) {
+    option (method_id) = 6;
+  }
+
+  // Unregister for subscription change events
+  rpc UnregisterForNotifications(NotificationsRequest) returns (google.rpc.Status) {
+    option (method_id) = 7;
+  }
+
+  // Fetch a list of subscribers that are currently subscribed to a given topic.
+  rpc FetchSubscribers(FetchSubscribersRequest) returns (FetchSubscribersResponse) {
+    option (method_id) = 8;
+  }
+}
+
+
+// Additional subscription configurations information
+message SubscribeAttributes {
+  // When the subscription should expire (time in the future.
+  // **__NOTE:__** If this field is missing, assumed to live forever
+  google.protobuf.Timestamp expire = 1;
+
+  // Any additional producer specific information that the consumer must send
+  // inside of a subscription request
+  repeated google.protobuf.Any details = 2;
+}
+
+
+// Subscriber Identification Information
+message SubscriberInfo {
+  // Fully qualified uProtocol subscriber URI, ex. `up://device.domain/com.gm.app.hartley`
+  string uri = 1;
+
+  // Any additional device specific subscriber information
+  repeated google.protobuf.Any details = 2;
+}
+
+
+// Subscription Status
+message SubscriptionStatus {
+  enum State {
+
+    UNSUBSCRIBED = 0;         // Default state to indicate not subscribed
+
+    SUBSCRIBE_PENDING = 1;    // Subscription is pending confirmation from remote
+                              // uSubscription Service
+
+    SUBSCRIBED = 2;           // Subscription has been successful
+
+    UNSUBSCRIBE_PENDING = 3;  // Unsubscribe is pending confirmation from the
+                              // remote uSubscription Service
+  }
+
+  // Subscription state
+  State state = 1;
+
+  // The Subscription status code
+  google.rpc.Code code = 2;
+
+  // The Subscription status message
+  string message = 3;
+}
+
+
+// How events will be delivered to the subscriber. Usage of this structure is
+// device-dependent
+message EventDeliveryConfig {
+  // Identifier for the event delivery endpoint, ex. topic name for events to be published to
+  // example for Azure uCloud: "SUBSCRIPTION_TOPIC"
+  string id = 1;
+
+  // What type of endpoint shall be used to deliver the events for said subscription
+  // example for Azure uCloud: "Microsoft.EventHub/Namespaces/EventHubs"
+  string type = 2;
+
+  // Any additional configuration attributes
+  map <string, google.protobuf.Any>  attributes = 3;
+}
+
+
+// Passed to Subscribe() contains the subscription request information
+message SubscriptionRequest {
+  // uProtocol uri topic to subscribe too
+  Topic topic = 1;
+
+  // Subscribers's information (who is calling Subscribe)
+  SubscriberInfo subscriber = 2;
+
+  // Additional subscription attributes
+  SubscribeAttributes attributes = 3;
+}
+
+
+// Response message from the Subscribe() API
+message SubscriptionResponse {
+  // Current status of the subscription (state, code, etc...)
+  SubscriptionStatus status = 1;
+
+  // Any platform (uDevice) specific additional event delivered configuration
+  // information for how the subscriber should consume the published events.
+  EventDeliveryConfig config = 2;
+}
+
+
+// Passed to the Unsubscribe() API, the message contains the topic to unsubscribe
+// to as well as the subscriber identification
+message UnsubscribeRequest {
+  // Topic to be unsubscribed to
+  Topic topic = 1;
+
+  // Subscriber identification
+  SubscriberInfo subscriber = 2;
+}
+
+
+// Passed to FetchSubscribers such that we can obtain a list of subscribers to
+// a particular topic
+message FetchSubscribersRequest {
+  // Topic we wish to find the subscribers for
+  Topic topic = 1;
+
+  // Offset in the fetch requests
+  optional uint32 offset = 2;
+}
+
+
+// Returned from FetchSubscribers(), this message contains a repeated list of
+// SubscriberInfo
+message FetchSubscribersResponse {
+  // List of subscribers
+  repeated SubscriberInfo subscribers = 1;
+
+  // Set to true if the batch did not return all records
+  optional bool has_more_records = 2;
+
+  // Status of the query
+  google.rpc.Status status = 3;
+}
+
+
+// Subscription Message. Contains all the information about a subscription that
+// is returned from FetchSubscriptions() API.
+message Subscription {
+  // List of Subscription records
+  Topic topic = 1;
+
+  // Information about the subscriber who changed their subscription
+  SubscriberInfo subscriber = 2;
+
+  // Current status of the subscription (state, code, etc...)
+  SubscriptionStatus status = 3;
+
+  // Subscribers subscription attributes
+  SubscribeAttributes attributes = 4;
+
+  // Any platform (uDevice) specific additional event delivered configuration
+  // information for how the subscriber should consume the published events.
+  EventDeliveryConfig config = 5;
+}
+
+
+message FetchSubscriptionsRequest {
+    oneof request {
+      // Topic to register/unregister to receive subscription change notifications
+      Topic topic = 1;
+
+      // Subscribers's information
+      SubscriberInfo subscriber = 2;
+    }
+
+    // Offset in the fetch requests
+    optional uint32 offset = 3;
+}
+
+
+// Results from FetchSubscriptions() API
+message FetchSubscriptionsResponse {
+  // Repeated list of subscriptions for a subscriber
+  repeated Subscription subscriptions = 1;
+
+  // Set to true if the batch did not return all records
+  optional bool has_more_records = 2;
+
+  // Status of the query
+  google.rpc.Status status = 3;
+}
+
+
+// Passed to the RegisterForSubscriptionChanges() and UnregisterForSubscriptionChanges()
+// APIs this message includes the topic to register for subscription changes as well
+// as information about the subscriber who wishes to receive said notifications
+message NotificationsRequest {
+    // Topic to register/unregister to receive subscription change notifications
+    Topic topic = 1;
+
+    // Subscribers's information
+    SubscriberInfo subscriber = 2;
+}
+
+
+// Message passed to CreateTopic()
+message CreateTopicRequest {
+  // uProtocol Topic
+  Topic topic = 1;
+}
+
+
+// Message passed to DeprecateTopic()
+message DeprecateTopicRequest {
+  // uProtocol Topic
+  Topic topic = 1;
+}
+
+
+// Subscription Update Message.
+// This Update message is sent from uSusbcription on the topic:
+// '/core.usubscription/2/subscriptions#Update' whenever there is a change to
+// a subscription. Subscribers automatically receive this notification along with
+// any uE that called RegisterForNotifications().
+message Update {
+  // List of Subscription records
+  Topic topic = 1;
+
+  // Information about the subscriber who changed their subscription
+  SubscriberInfo subscriber = 2;
+
+  // Current status of the subscription (state, code, etc...)
+  SubscriptionStatus status = 3;
+
+  // Subscribers subscription attributes
+  SubscribeAttributes attributes = 4;
+
+  // Service meta-data option definitions - Resources
+  enum Resources { subscriptions = 0; }
+}
+
+
+// Subscription Change Notification.
+// Structure used to build the subscription change notification topic
+message SubscriptionChangeNotification {
+  // Service meta-data option definition - Topic identity
+  option (base_topic_id) = 0;
+
+  // Meta flags for generating the YAML
+  Update.Resources resource_name = 1 [(resource_name_mask) = "*"];
+}

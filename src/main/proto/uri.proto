@@ -1,0 +1,64 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+syntax = "proto3";
+
+package uprotocol;
+
+import "google/rpc/status.proto";
+import "google/protobuf/any.proto";
+
+option java_package = "org.eclipse.uprotocol";
+option java_multiple_files = true;
+
+
+// Uri passed to an RPC call containing the uri, credentials, and any other
+// information that might be required
+message UriRequest {
+  // uProtocol formatted URI
+  string uri = 1;
+
+  // Authorization credentials
+  map <string, google.protobuf.Any>  credentials = 2;
+
+  // How many do we want to return when the response is a batch.
+  optional int32 limit = 3;
+
+  // Where to start in a batch response, default is 0 when not specified
+  optional int32 offset = 4;
+
+  // Any additional details needed
+  repeated google.protobuf.Any details = 5;
+}
+
+
+// Return value for the lookupUriRequest
+message UriResponse {
+  repeated string uris = 1;  // List of qualified (absolute) uris
+  google.rpc.Status result = 2;  // Return code for the rpc call
+}
+
+
+// Batch of Uris
+message UriBatch {
+  // List of uris
+  repeated string uris = 1;
+
+  // Set to true if the batch did not return all records
+  bool more_records = 2;
+}

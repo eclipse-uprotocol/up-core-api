@@ -1,0 +1,76 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+syntax = "proto3";
+
+package uprotocol.core.utwin.v1;
+
+import "google/rpc/status.proto";
+import "topic.proto";
+import "options.proto";
+import "spec.proto"; // CloudEvents proto
+
+option java_package = "org.eclipse.uprotocol.core.utwin.v1";
+option java_outer_classname = "UTwinProto";
+option java_multiple_files = true;
+
+// uTwin Service interface definition
+service uTwin {
+  option (name) = "core.utwin"; // Service name
+  option (version_major) = 1;
+  option (version_minor) = 0;
+  option (id) = 26;
+
+  // A uE calls this API to retrieve the last event that was published on Topic
+  // If the uTwin succeeds in retrieving the event, the response is set as follows:
+  // - status.Code is set to OK,
+  // - the event field contains the last event
+  // The event is retrieved either from its own internal storage, or by explicitly
+  // requesting from the uE "owning" the Topic to publish a new event that the uTwin 
+  // will subsequently receive
+  // If uTwin fails to retrieve the last event:
+  // - status.Code = NOT_FOUND | PERMISSION_DENIED
+  // - event is left empty
+  rpc GetLastEvent(Topic) returns (GetLastEventResponse) {
+    option (method_id) = 1;
+  }
+
+  // A call to SetLastEvent (typically from uBus) sets the uTwin internal cache 
+  // as follows: a pair (topic, event) for future retrieval based on topic as
+  // the primary key to retrieve an event:
+  // - topic is set to CloudEvent.source
+  // - event is set to CloudEvent
+  // Return value status.Code is one of:
+  // - OK if CE was successfully stored in uTwin
+  // - INVALID argument if uTwin encountered an issue with CE content (source field in particular) 
+  // - PERMISSION_DENIED if requesting uE does not have permission to access the Topic
+  // - RESOURCE_EXHAUSTED if uTwin has no more memory available to store new CEs
+  rpc SetLastEvent(io.cloudevents.v1.CloudEvent) returns (google.rpc.Status) {
+    option (method_id) = 2;
+  }
+
+}
+
+// Message returned by the rpc GetLastEvent
+// status indicates if the rpc succeeded, and if not, provides insights
+// by return specific error codes (see comment on the rpc itself)
+// event contains the CloudEvent that was requested
+message GetLastEventResponse {
+  google.rpc.Status status = 1;
+  io.cloudevents.v1.CloudEvent event = 2;
+}
