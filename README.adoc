@@ -1,12 +1,13 @@
-image:logo/uprotocol_logo.png[uProtocol, width=640]
+image:https://github.com/eclipse-uprotocol/.github/raw/main/logo/uprotocol_logo.png[uProtocol, width=640]
 
 image:https://img.shields.io/badge/License-Apache%202.0-blue.svg[License,link=https://opensource.org/licenses/Apache-2.0]
 
-NOTE: Please refer to https://github.com/eclipse-uprotocol/uprotocol-spec[] for more information about uProtocol
+*NOTE:* _Please refer to https://github.com/eclipse-uprotocol/uprotocol-spec[] for more information about uProtocol_
 
 
 == How To Build?
 
 This project builds the core services (uSubscription, uDiscovery, uTwin) using the maven build system. Import the project into your favorite IDE and select one of the build targets from maven Lifecycle dropdown list.
 
-NOTE: _Coming soon_ the project will pull in the language-specific SDKs to build client-server stubs for the core services. Eventually, the stub generation could be extended to non-uProtocol service definitions (ex. ADAS, charging stations, cloud services, etc...)
+*NOTE:* _Coming soon the project will pull in the language-specific SDKs to build client-server stubs for the core services. Eventually, the stub generation could be extended to non-uProtocol service definitions (ex. ADAS, charging stations, cloud services, etc...)_
+
