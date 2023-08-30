@@ -37,7 +37,7 @@ option java_multiple_files = true;
 service uSubscription {
   option (name) = "core.usubscription"; // Service name
   option (version_major) = 2;
-  option (version_minor) = 0;
+  option (version_minor) = 1;
   option (id) = 0;
 
   // A consumer (application) calls this API to subscribe to a topic.
@@ -91,6 +91,17 @@ service uSubscription {
   // Fetch a list of subscribers that are currently subscribed to a given topic.
   rpc FetchSubscribers(FetchSubscribersRequest) returns (FetchSubscribersResponse) {
     option (method_id) = 8;
+  }
+
+  // Reset subscriptions to and from the uSubscription Service. 
+  // This API is used between uSubscription services in order to flush and 
+  // reestablish subscriptions between devices. A uSubscription service might 
+  // ned to call this API if its database is flushed or corrupted (ex. factory
+  // reset).
+  // **__NOTE:__** This is a private API only for uSubscription services,
+  // uEs can call Unsubscribe() to flush their own subscriptions.
+  rpc Reset(ResetRequest) returns (google.rpc.Status) {
+    option (method_id) = 9;
   }
 }
 
@@ -324,4 +335,44 @@ message SubscriptionChangeNotification {
 
   // Meta flags for generating the YAML
   Update.Resources resource_name = 1 [(resource_name_mask) = "*"];
+}
+
+
+// Passive Subscription Mode.
+// Passive subscriptions, in lieu of active ones, do not modify (the state) nor 
+// notify the publisher of the subscribers subscription. Passive subscriptions
+// are a means to support observability frameworks to passively listen for 
+// events. 
+// *NOTE*: This attribute is an internal platform setting (for now) and not 
+// exposed as part of SubscribeAttributes.
+message PassiveMode {
+  bool enable = 1;    // Enable passive subscription mode
+}
+
+
+// Reset Subscriptions Request.
+// Passed in the Reset() API this message contains the reason for the reset as
+// well as the time before which all subscriptions should be reset.
+message ResetRequest {
+  // Reason for the reset
+  optional Reason reason = 1;
+ 
+  // Reset all subscriptions that are before this time, if omitted, the 
+  // current time is assumed
+  optional google.protobuf.Timestamp before = 2;
+ 
+  // The reason for triggering a reset, this is an optional attribute used
+  // to provide insight as to why a reset occurred
+  // More reasons will be added as we distill the business logic
+  message Reason {
+    Code code = 1;  // Reason code
+    optional string message = 2; // Reason message
+
+    // Reason code
+    enum Code {
+      UNSPECIFIED = 0;  // Default non-specified reason for issuing a reset
+      FACTORY_RESET = 1;  // Factory reset
+      CORRUPTED_DATA = 2;  // Corrupted data
+    }
+  }
 }
