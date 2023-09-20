@@ -63,10 +63,21 @@
                             <goal>compile-cpp</goal>
                         </goals>
                     </execution>
+                     <execution>
+                        <id>compile-kt</id>
+                        <goals>
+                        <goal>compile-custom</goal>
+                        </goals>
+                        <configuration>
+                            <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}</protocArtifact>
+                            <outputDirectory>${project.build.directory}/generated-sources/protobuf/kotlin</outputDirectory>
+                            <pluginId>kotlin</pluginId>
+                        </configuration>
+                    </execution>
                 </executions>
-                <configuration>
-                    <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}</protocArtifact>
-                </configuration>
+                    <configuration>
+                            <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}</protocArtifact>
+                    </configuration>
             </plugin>                 
 
             <plugin>
@@ -115,6 +126,12 @@
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-kotlin</artifactId>
+            <version>${protobuf.version}</version>
         </dependency>
 
         <dependency>

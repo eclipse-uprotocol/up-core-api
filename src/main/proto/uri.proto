@@ -32,7 +32,8 @@ option java_multiple_files = true;
 // Uri passed to an RPC call containing the uri, credentials, and any other
 // information that might be required
 message UriRequest {
-  // uProtocol formatted URI
+  // uProtocol URI serialized in Long format per 
+  // https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/uri.adoc[URI Specifications]
   string uri = 1;
 
   // Authorization credentials
