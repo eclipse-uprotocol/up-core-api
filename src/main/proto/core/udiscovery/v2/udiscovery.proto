@@ -341,8 +341,8 @@ message NodeNotificationTopic {
 message ResolveUriRequest {
   // The URI to resolve
   oneof uri {
-    string longUri = 1; // UUri serialized in Long Format (string)
-    bytes microUri = 2; // UUri serialized in Micro format (byte array)
+    string long_uri = 1; // UUri serialized in Long Format (string)
+    bytes micro_uri = 2; // UUri serialized in Micro format (byte array)
   }
 }
 
@@ -351,8 +351,8 @@ message ResolveUriRequest {
 // serialized Uris and a status
 message ResolveUriResponse {
 
-  string longUri = 1; // UUri serialized in Long Format (string)
-  bytes microUri = 2; // UUri serialized in Micro format (byte array)
+  string long_uri = 1; // UUri serialized in Long Format (string)
+  bytes micro_uri = 2; // UUri serialized in Micro format (byte array)
   
   google.rpc.Status status = 3; // Return code for the rpc call
 }
