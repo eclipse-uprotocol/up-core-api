@@ -115,7 +115,7 @@ service uDiscovery {
   }
 
   /**
-  * Resolve a serialized UUri from either long or micro to a fully qualified URI.option
+  * Resolve a serialized UUri from either long or micro to a fully qualified URI.
   * @param request The serialized UUri either as a long or micro
   * @return The fully qualified URI in ResolvedUriResponse
   */
@@ -348,7 +348,7 @@ message ResolveUriRequest {
 
 
 // Response message returned from ResolveUri() API containing the resolved Long and Micro
-// serialized Uris
+// serialized Uris and a status
 message ResolveUriResponse {
 
   string longUri = 1; // UUri serialized in Long Format (string)
