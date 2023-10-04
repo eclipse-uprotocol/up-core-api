@@ -61,14 +61,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <distributionManagement>
-      <repository>
-        <id>github</id>
-        <name>GitHub shaishap Apache Maven Packages</name>
-        <url>https://maven.pkg.github.com/shaishap/uprotocol-core-api</url>
-      </repository>
-   </distributionManagement>
-         
     <dependencies>
 
         <!-- https://mvnrepository.com/artifact/io.cloudevents/cloudevents-protobuf -->
