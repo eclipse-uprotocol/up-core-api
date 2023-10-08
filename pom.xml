@@ -8,11 +8,11 @@
     <artifactId>uprotocol-core-api</artifactId>
     <name>uProtocol Core uEs API</name>
     <description>This project contains the built artifacts for core uProtocol services (uSubscription, uDiscovery, uTwin, etc..). Artifacts include language specific messages and client/server stubs</description>
-    <version>${buildVersion}</version>
+    <version>1.4-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
-        <revision>1.4</revision>
+<!--         <revision>1.4</revision> -->
         <protobuf.version>3.21.10</protobuf.version>
         <assertj-core.version>3.16.1</assertj-core.version>
         <junit-jupiter.version>5.7.0</junit-jupiter.version>
@@ -47,16 +47,46 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.8.2</version>
-<!--                 <configuration>
-                    <skip>true</skip>
-                </configuration> -->
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-gpg-plugin</artifactId>
+               <version>1.5</version>
+               <executions>
+                 <execution>
+                   <id>sign-artifacts</id>
+                   <phase>verify</phase>
+                   <goals>
+                     <goal>sign</goal>
+                   </goals>
+                 </execution>
+               </executions>
             </plugin>
+                 
+            <plugin>
+               <groupId>org.sonatype.plugins</groupId>
+               <artifactId>nexus-staging-maven-plugin</artifactId>
+               <version>1.6.7</version>
+               <extensions>true</extensions>
+               <configuration>
+                 <serverId>ossrh</serverId>
+                 <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                 <autoReleaseAfterClose>true</autoReleaseAfterClose>
+               </configuration>
+            </plugin>                 
+
         </plugins>
     </build>
 
+    <distributionManagement>
+      <snapshotRepository>
+        <id>ossrh</id>
+        <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+      </snapshotRepository>
+      <repository>
+        <id>ossrh</id>
+        <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      </repository>
+    </distributionManagement>
+         
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -118,7 +148,7 @@
         </dependency>
     </dependencies>
 
-<profiles>
+<!-- <profiles>
     <profile>
         <id>snapshot-repo</id>
         <activation>
@@ -158,5 +188,6 @@
        </distributionManagement>                      
     </profile>
 </profiles>
-
+ -->
+         
 </project>
