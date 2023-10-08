@@ -1,11 +1,11 @@
 # This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
 # For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
 
-name: Build release maven central
+name: Build Deploy and Release - maven central
 
 on:
-  release:
-    types: [created]
+  # release:
+  #   types: [created]
   workflow_dispatch:
 
 jobs:
@@ -24,22 +24,12 @@ jobs:
         distribution: 'temurin'
         java-version: '11'
 
-    - name: Build with Maven
+    - name: Build
       run: mvn -B package --file pom.xml
-
-    # - name: Publish to GitHub Packages Apache Maven
-    #   run: mvn deploy
-    #   env:
-    #     GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
-
-    # - name: Publish to GitHub Packages Apache Maven
-    #   run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
-    #   env:
-    #     GITHUB_TOKEN: ${{ github.token }}
 
     - name: Set up Apache Maven Central
       uses: actions/setup-java@v3
-      with: # running setup-java again overwrites the settings.xml
+      with: # configure settings.xml
         distribution: 'temurin'
         java-version: '11'
         server-id: maven
@@ -49,7 +39,7 @@ jobs:
         gpg-passphrase: ${{ secrets.ORG_GPG_PASSPHRASE }}
 
     - name: Publish to Apache Maven Central
-      run: mvn deploy
+      run: mvn deploy -Dsnapshot=true
       env:
         MAVEN_USERNAME: ${{ secrets.ORG_OSSRH_USERNAME }}
         MAVEN_CENTRAL_TOKEN: ${{ secrets.ORG_OSSRH_PASSWORD }}
