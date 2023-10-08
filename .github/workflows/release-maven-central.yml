@@ -32,7 +32,7 @@ jobs:
       with: # configure settings.xml
         distribution: 'temurin'
         java-version: '11'
-        server-id: maven
+        server-id: ossrh
         server-username: ${{ secrets.ORG_OSSRH_USERNAME }}
         server-password: ${{ secrets.ORG_OSSRH_PASSWORD }}
         gpg-private-key: ${{ secrets.ORG_GPG_PRIVATE_KEY }}
@@ -41,7 +41,8 @@ jobs:
     - name: Publish to Apache Maven Central
       # run: mvn deploy
       run: mvn deploy -Dsnapshot=true
-      env:
-        MAVEN_USERNAME: ${{ secrets.ORG_OSSRH_USERNAME }}
-        MAVEN_CENTRAL_TOKEN: ${{ secrets.ORG_OSSRH_PASSWORD }}
-        MAVEN_GPG_PASSPHRASE: ${{ secrets.ORG_GPG_PASSPHRASE }}
+      # env:
+      #   ORG_OSSRH_USERNAME: ${{ secrets.ORG_OSSRH_USERNAME }}
+      #   ORG_OSSRH_PASSWORD: ${{ secrets.ORG_OSSRH_PASSWORD }}
+      #   ORG_GPG_PRIVATE_KEY: ${{ secrets.ORG_GPG_PRIVATE_KEY }}
+      #   ORG_GPG_PASSPHRASE: ${{ secrets.ORG_GPG_PASSPHRASE }}
