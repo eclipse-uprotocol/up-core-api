@@ -46,8 +46,8 @@ jobs:
     - name: Publish to Apache Maven Central
       # run: mvn deploy
       run: mvn deploy -Dsnapshot=true
-      # env:
-      #   ORG_OSSRH_USERNAME: ${{ secrets.ORG_OSSRH_USERNAME }}
-      #   ORG_OSSRH_PASSWORD: ${{ secrets.ORG_OSSRH_PASSWORD }}
-      #   ORG_GPG_PRIVATE_KEY: ${{ secrets.ORG_GPG_PRIVATE_KEY }}
+      env:
+        gpg_keyname: ${{ secrets.ORG_GPG_PRIVATE_KEY }}
+        ORG_OSSRH_USERNAME: ${{ secrets.ORG_OSSRH_USERNAME }}
+        ORG_OSSRH_PASSWORD: ${{ secrets.ORG_OSSRH_PASSWORD }}
       #   ORG_GPG_PASSPHRASE: ${{ secrets.ORG_GPG_PASSPHRASE }}
