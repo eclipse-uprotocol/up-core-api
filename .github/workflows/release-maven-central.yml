@@ -25,7 +25,10 @@ jobs:
         java-version: '11'
 
     - name: See settings
-      run: cat settings.xml
+      run: |
+        env
+        find . -name "settings.xml" -print
+        cat settings.xml
 
     - name: Build
       run: mvn -B package --file pom.xml
