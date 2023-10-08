@@ -24,11 +24,10 @@ jobs:
         distribution: 'temurin'
         java-version: '11'
 
-    - name: See settings
+    - name: See gpg configuration
       run: |
-        env
-        find . -name "settings.xml" -print
-        cat settings.xml
+        gpg --list-signatures --keyid-format 0xshort
+        find . -name "*settings*.*" -print
 
     - name: Build
       run: mvn -B package --file pom.xml
