@@ -68,7 +68,15 @@
 
         </dependencies>
     </dependencyManagement>
-
+         
+   <distributionManagement>
+      <repository>
+        <id>maven</id>
+        <name>Apache Maven Dev Packages</name>
+        <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+      </repository>
+   </distributionManagement>
+         
     <dependencies>
 
         <!-- https://mvnrepository.com/artifact/io.cloudevents/cloudevents-protobuf -->
