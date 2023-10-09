@@ -38,3 +38,10 @@ jobs:
 
     - name: Build and Publish to Apache Maven Central
       run: mvn clean deploy
+
+    - name: Get package version
+      run: |
+        PKGVER=$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version | grep -v INFO | grep -E "\d")
+        git tag -d "$PKGVER" || true
+        git tag -a -m "auto-created by CI" "$PKGVER"
+        git push origin --tags
