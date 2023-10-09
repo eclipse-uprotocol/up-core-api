@@ -4,9 +4,9 @@
 name: Build, Deploy, Release - maven central
 
 on:
-  # release:
-  #   types: [created]
   push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
