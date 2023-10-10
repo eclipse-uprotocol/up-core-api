@@ -30,7 +30,7 @@ jobs:
         server-id: ossrh
         server-username: MVN_DEPLOY_USER
         server-password: MVN_DEPLOY_PASSWORD
-        gpg-private-key: GPG_PRIVATE_KEY
+        gpg-private-key: ${{ secrets.ORG_GPG_PRIVATE_KEY }}
         gpg-passphrase: GPG_PASSPHRASE
 
     - name: Build and Publish to Apache Maven Central
@@ -38,7 +38,6 @@ jobs:
       env:
         MVN_DEPLOY_USER: ${{ secrets.ORG_OSSRH_USERNAME }}
         MVN_DEPLOY_PASSWORD: ${{ secrets.ORG_OSSRH_PASSWORD }}
-        GPG_PRIVATE_KEY: ${{ secrets.ORG_GPG_PRIVATE_KEY }}
         GPG_PASSPHRASE: ${{ secrets.ORG_GPG_PASSPHRASE }}
 
     - name: Get package version
