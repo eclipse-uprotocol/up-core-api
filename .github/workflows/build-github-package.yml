@@ -1,12 +1,10 @@
-name: Publish to github maven
+name: Publish github maven package
 
 on:
-  release:
-    types: [created]
   workflow_dispatch:
 
 jobs:
-  build:
+  build-package:
 
     runs-on: ubuntu-latest
     permissions:
@@ -26,7 +24,7 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    - name: Publish to GitHub Packages Apache Maven
+    - name: Publish maven package to GitHub Packages
       run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
       env:
         # GITHUB_TOKEN: ${{ github.token }}
