@@ -37,6 +37,8 @@ jobs:
       run: |
         gh secret list
         mvn clean deploy
+      env:
+        GH_TOKEN: ${{ github.token }}
 
     - name: Get package version
       run: |
