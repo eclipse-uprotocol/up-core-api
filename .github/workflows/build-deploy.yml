@@ -1,4 +1,4 @@
-name: Build, Deploy, Release - maven central
+name: Build and Deploy - maven central
 
 on:
   push:
@@ -34,7 +34,7 @@ jobs:
         gpg-passphrase: GPG_PASSPHRASE
 
     - name: Build and Publish to Apache Maven Central
-      run: mvn clean deploy
+      run: mvn clean compile
       env:
         OSSRH_USER: ${{ secrets.ORG_OSSRH_USERNAME }}
         OSSRH_PASSWORD: ${{ secrets.ORG_OSSRH_PASSWORD }}
@@ -42,7 +42,10 @@ jobs:
 
     - name: Get package version
       run: |
-        PKGVER=$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version | grep -v INFO | grep -E "\d")
+        PKGVER=$(mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate -Dexpression=project.version -q -DforceStdout)
+        # mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version
+        # PKGVER=$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version | grep -v INFO | grep -E "\d")
+        echo "VER=$PKGVER"
         git tag -d "$PKGVER" || true
         git tag -a -m "auto-created by CI" "$PKGVER"
         git push origin --tags
