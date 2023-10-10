@@ -42,7 +42,10 @@ jobs:
 
     - name: Get package version
       run: |
-        mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version
+        echo "START"
+        mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate -Dexpression=project.version -q -DforceStdout
+        echo "END"
+        # mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version
         PKGVER=$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version | grep -v INFO | grep -E "\d")
         echo $PKGVER
         # git tag -d "$PKGVER" || true
