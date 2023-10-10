@@ -28,17 +28,18 @@ jobs:
         distribution: 'temurin'
         java-version: '11'
         server-id: ossrh
-        server-username: ${{ secrets.ORG_OSSRH_USERNAME }}
-        server-password: ${{ secrets.ORG_OSSRH_PASSWORD }}
-        gpg-private-key: ${{ secrets.ORG_GPG_PRIVATE_KEY }}
-        gpg-passphrase: ${{ secrets.ORG_GPG_PASSPHRASE }}
+        server-username: MVN_DEPLOY_USER
+        server-password: MVN_DEPLOY_PASSWORD
+        gpg-private-key: GPG_PRIVATE_KEY
+        gpg-passphrase: GPG_PASSPHRASE
 
     - name: Build and Publish to Apache Maven Central
-      run: |
-        cat /home/runner/.m2/settings.xml
-        mvn clean deploy
+      run: mvn clean deploy
       env:
-        GH_TOKEN: ${{ github.token }}
+        MVN_DEPLOY_USER: ${{ secrets.ORG_OSSRH_USERNAME }}
+        MVN_DEPLOY_PASSWORD: ${{ secrets.ORG_OSSRH_PASSWORD }}
+        GPG_PRIVATE_KEY: ${{ secrets.ORG_GPG_PRIVATE_KEY }}
+        GPG_PASSPHRASE: ${{ secrets.ORG_GPG_PASSPHRASE }}
 
     - name: Get package version
       run: |
