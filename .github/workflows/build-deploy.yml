@@ -16,11 +16,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    # - name: Set up JDK 11
-    #   uses: actions/setup-java@v3
-    #   with:
-    #     distribution: 'temurin'
-    #     java-version: '11'
 
     - name: Set up Apache Maven Central
       uses: actions/setup-java@v3
@@ -45,11 +40,10 @@ jobs:
         git config --global user.email "${ACTOR_EMAIL}"
         git config --global user.name "${ACTOR_NAME}"
         PKGVER=$(mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate -Dexpression=project.version -q -DforceStdout)
-        # mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version
-        # PKGVER=$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version | grep -v INFO | grep -E "\d")
-        echo "VER=$PKGVER"
-        git tag -d "$PKGVER" || true
-        git tag -a -m "auto-created by CI" "$PKGVER"
+        echo "VER=$PKG_VER"
+        git tag -d "$PKG_VER" || true
+        git push origin --delete "$PKG_VER" || true
+        git tag -a -m "auto-created by CI" "$PKG_VER"
         git push origin --tags
       env:
         ACTOR_NAME: ${{ github.event.pusher.name }}
