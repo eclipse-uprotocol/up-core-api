@@ -52,5 +52,5 @@ jobs:
         git tag -a -m "auto-created by CI" "$PKGVER"
         git push origin --tags
       env:
-        ACTOR_NAME: ${{ github.pusher.name }}
-        ACTOR_EMAIL: ${{ github.pusher.email }}
+        ACTOR_NAME: ${{ github.event.pusher.name }}
+        ACTOR_EMAIL: ${{ github.event.pusher.email }}
