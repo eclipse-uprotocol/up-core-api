@@ -1,4 +1,4 @@
-name: Build, Deploy, Release - maven central
+name: Build and Deploy - maven central
 
 on:
   push:
@@ -42,7 +42,9 @@ jobs:
 
     - name: Get package version
       run: |
+        mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version
         PKGVER=$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version | grep -v INFO | grep -E "\d")
-        git tag -d "$PKGVER" || true
-        git tag -a -m "auto-created by CI" "$PKGVER"
-        git push origin --tags
+        echo $PKGVER
+        # git tag -d "$PKGVER" || true
+        # git tag -a -m "auto-created by CI" "$PKGVER"
+        # git push origin --tags
