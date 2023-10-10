@@ -42,6 +42,8 @@ jobs:
 
     - name: Get package version
       run: |
+        git config --global user.email "${ACTOR_EMAIL}"
+        git config --global user.name "${ACTOR_NAME}"
         PKGVER=$(mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate -Dexpression=project.version -q -DforceStdout)
         # mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version
         # PKGVER=$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version | grep -v INFO | grep -E "\d")
@@ -49,3 +51,6 @@ jobs:
         git tag -d "$PKGVER" || true
         git tag -a -m "auto-created by CI" "$PKGVER"
         git push origin --tags
+      env:
+        ACTOR_NAME: ${{ github.pusher.name }}
+        ACTOR_EMAIL: ${{ github.pusher.email }}
