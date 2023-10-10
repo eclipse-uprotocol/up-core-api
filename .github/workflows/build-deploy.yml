@@ -34,7 +34,7 @@ jobs:
         gpg-passphrase: GPG_PASSPHRASE
 
     - name: Build and Publish to Apache Maven Central
-      run: mvn clean deploy
+      run: mvn clean build
       env:
         OSSRH_USER: ${{ secrets.ORG_OSSRH_USERNAME }}
         OSSRH_PASSWORD: ${{ secrets.ORG_OSSRH_PASSWORD }}
