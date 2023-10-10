@@ -54,3 +54,4 @@ jobs:
       env:
         ACTOR_NAME: ${{ github.event.pusher.name }}
         ACTOR_EMAIL: ${{ github.event.pusher.email }}
+        GH_TOKEN: ${{ github.token }}
