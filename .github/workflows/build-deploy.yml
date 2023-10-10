@@ -34,7 +34,9 @@ jobs:
         gpg-passphrase: GPG_PASSPHRASE
 
     - name: Build and Publish to Apache Maven Central
-      run: mvn clean deploy
+      run: |
+        cat /home/runner/.m2/settings.xml
+        mvn clean deploy
       env:
         MVN_DEPLOY_USER: ${{ secrets.ORG_OSSRH_USERNAME }}
         MVN_DEPLOY_PASSWORD: ${{ secrets.ORG_OSSRH_PASSWORD }}
