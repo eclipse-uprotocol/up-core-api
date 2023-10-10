@@ -34,7 +34,9 @@ jobs:
         gpg-passphrase: ${{ secrets.ORG_GPG_PASSPHRASE }}
 
     - name: Build and Publish to Apache Maven Central
-      run: mvn clean deploy
+      run: |
+        gh secret list
+        mvn clean deploy
 
     - name: Get package version
       run: |
