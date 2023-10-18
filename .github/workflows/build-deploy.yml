@@ -34,18 +34,3 @@ jobs:
         OSSRH_USER: ${{ secrets.ORG_OSSRH_USERNAME }}
         OSSRH_PASSWORD: ${{ secrets.ORG_OSSRH_PASSWORD }}
         GPG_PASSPHRASE: ${{ secrets.ORG_GPG_PASSPHRASE }}
-
-    - name: Get package version
-      run: |
-        git config --global user.email "${ACTOR_EMAIL}"
-        git config --global user.name "${ACTOR_NAME}"
-        PKG_VER=$(mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate -Dexpression=project.version -q -DforceStdout)
-        echo "VER=$PKG_VER"
-        git tag -d "$PKG_VER" || true
-        git push origin --delete "$PKG_VER" || true
-        git tag -a -m "auto-created by CI" "$PKG_VER"
-        git push origin --tags
-      env:
-        ACTOR_NAME: ${{ github.event.pusher.name }}
-        ACTOR_EMAIL: ${{ github.event.pusher.email }}
-        GH_TOKEN: ${{ github.token }}
