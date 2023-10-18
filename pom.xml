@@ -16,6 +16,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <scm-user>${env.USER}</scm-user>
     </properties>
 
     <scm>
@@ -23,6 +24,7 @@
         <developerConnection>scm:git:${project.scm.url}</developerConnection>
         <url>https://github.com/shaishap/uprotocol-core-api.git</url>
         <tag>uprotocol-core-api-1.4.2</tag>
+        <username>${scm-user}</username>
     </scm>
 
     <build>
