@@ -10,7 +10,7 @@ jobs:
 
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
 
     steps:
@@ -33,13 +33,11 @@ jobs:
         gpg-private-key: ${{ secrets.ORG_GPG_PRIVATE_KEY }}
         gpg-passphrase: GPG_PASSPHRASE
 
-    - if: github.event.release
-      name: Update version in pom.xml (Release only)
-      run: mvn -B versions:set -DnewVersion=${{ github.event.release.tag_name }} -DgenerateBackupPoms=false
-
     - name: Build and Release to Maven central
-      run: mvn -Prelease --batch-mode clean deploy
+      run: |
+        mvn -Prelease --batch-mode clean release:prepare release:perform
       env:
         OSSRH_USER: ${{ secrets.ORG_OSSRH_USERNAME }}
         OSSRH_PASSWORD: ${{ secrets.ORG_OSSRH_PASSWORD }}
         GPG_PASSPHRASE: ${{ secrets.ORG_GPG_PASSPHRASE }}
+        GH_TOKEN: ${{ github.token }}
