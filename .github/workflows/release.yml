@@ -35,9 +35,17 @@ jobs:
 
     - name: Build and Release to Maven central
       run: |
+        git config --global user.email "${{ github.event.pusher.email }}"
+        git config --global user.name "${{ github.event.pusher.name }}"
         mvn -Prelease --batch-mode clean release:prepare release:perform
       env:
         OSSRH_USER: ${{ secrets.ORG_OSSRH_USERNAME }}
         OSSRH_PASSWORD: ${{ secrets.ORG_OSSRH_PASSWORD }}
         GPG_PASSPHRASE: ${{ secrets.ORG_GPG_PASSPHRASE }}
+        GH_TOKEN: ${{ github.token }}
+
+    - if: cancelled() || failure()
+      run: |
+        mvn --batch-mode release:rollback
+      env:
         GH_TOKEN: ${{ github.token }}
