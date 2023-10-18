@@ -6,7 +6,7 @@
     <artifactId>uprotocol-core-api</artifactId>
     <name>uProtocol Core uEs API</name>
     <description>This project contains the built artifacts for core uProtocol services (uSubscription, uDiscovery, uTwin, etc..). Artifacts include language specific messages and client/server stubs</description>
-    <version>1.4.2</version>
+    <version>1.4.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -16,15 +16,13 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <scm-user>${env.USER}</scm-user>
     </properties>
 
     <scm>
         <connection>scm:git:${project.scm.url}</connection>
         <developerConnection>scm:git:${project.scm.url}</developerConnection>
-        <url>https://github.com/shaishap/uprotocol-core-api.git</url>
+        <url>https://shaishap@github.com/shaishap/uprotocol-core-api.git</url>
         <tag>uprotocol-core-api-1.4.2</tag>
-        <username>${scm-user}</username>
     </scm>
 
     <build>
