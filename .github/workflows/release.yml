@@ -35,8 +35,8 @@ jobs:
 
     - name: Build and Release to Maven central
       run: |
-        git config --global user.email "${{ github.event.pusher.email }}"
-        git config --global user.name "${{ github.event.pusher.name }}"
+        git config --global user.name "${GITHUB_ACTOR}"
+        git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
         mvn -Prelease --batch-mode clean release:prepare release:perform
       env:
         OSSRH_USER: ${{ secrets.ORG_OSSRH_USERNAME }}
