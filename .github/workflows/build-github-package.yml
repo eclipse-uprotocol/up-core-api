@@ -12,6 +12,10 @@ jobs:
       packages: write
 
     steps:
+      - name: disable workflow
+        run: |
+          false
+
       - name: get env data
         run: |
           echo "********************** STANDARD ENV VARIABLES ********************"
