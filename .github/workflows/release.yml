@@ -2,11 +2,10 @@
 name: Release to maven central
 
 on:
-  release:
-    types: [created]
+  workflow_dispatch:
 
 jobs:
-  build:
+  release:
 
     runs-on: ubuntu-latest
     permissions:
