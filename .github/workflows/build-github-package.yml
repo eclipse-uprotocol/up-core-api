@@ -14,8 +14,10 @@ jobs:
     steps:
       - name: get env data
         run: |
-          echo "${{ github.event }} | jq '.'"
+          echo "${GH_EVENT}" | jq '.'
           false
+        env:
+          GH_EVENT: ${{ github.event }}
           
       - uses: actions/checkout@v3
       - name: Set up JDK 11
