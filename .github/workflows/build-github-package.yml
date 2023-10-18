@@ -14,6 +14,10 @@ jobs:
     steps:
       - name: get env data
         run: |
+          echo "********************** STANDARD ENV VARIABLES ********************"
+          env
+          echo ""
+          echo "********************** GITHUB EVENT json *************************"
           echo "${GITHUB_CONTEXT}" | jq '.'
           false
         env:
