@@ -20,14 +20,14 @@
  */
 syntax = "proto3";
 
-package uprotocol.core.utwin.v1;
+package uprotocol.v1.core.utwin.v1;
 
 import "google/rpc/status.proto";
 import "options.proto";
 import "uri.proto";
-import "spec.proto"; // CloudEvents proto
+import "umessage.proto"; // UMessage
 
-option java_package = "org.eclipse.uprotocol.core.utwin.v1";
+option java_package = "org.eclipse.uprotocol.v1.core.utwin.v1";
 option java_outer_classname = "UTwinProto";
 option java_multiple_files = true;
 
@@ -62,7 +62,7 @@ service uTwin {
   // - INVALID argument if uTwin encountered an issue with CE content (source field in particular) 
   // - PERMISSION_DENIED if requesting uE does not have permission to access the Topic
   // - RESOURCE_EXHAUSTED if uTwin has no more memory available to store new CEs
-  rpc SetLastEvent(io.cloudevents.v1.CloudEvent) returns (google.rpc.Status) {
+  rpc SetLastEvent(UMessage) returns (google.rpc.Status) {
     option (method_id) = 2;
   }
 
@@ -74,5 +74,5 @@ service uTwin {
 // event contains the CloudEvent that was requested
 message GetLastEventResponse {
   google.rpc.Status status = 1;
-  io.cloudevents.v1.CloudEvent event = 2;
+  UMessage event = 2;
 }

@@ -1,0 +1,89 @@
+/*
+ * Copyright (c) 2023 General Motors GTO LLC
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+ syntax = "proto3";
+
+ package uprotocol.v1;
+ 
+ import "uri.proto";
+ import "uuid.proto";
+  
+ option java_package = "org.eclipse.uprotocol.v1";
+ option java_outer_classname = "UAttributesProto";
+ option java_multiple_files = true;
+
+
+// When sending data over uTransport the basic API for send uses a source topic and the UPayload
+// as the data. Any other information about the message is placed in the UAttributes class.
+// The UAttributes class holds the additional information along with business methods for 
+// understanding more about the actual message sent. {@link UAttributes} is the class that 
+// defines the Payload. It is the place for configuring time to live, priority, security tokens
+// and more. Each UAttributes class defines a different type of message payload. The payload 
+// can represent a simple published payload with some state change,
+// Payload representing an RPC request or Payload representing an RPC response.
+message UAttributes {
+    UUID id = 1;                    // Unique identifier for the message
+    UMessageType type = 2;          // Message type
+    UPriority priority = 3;         // Message priority
+
+    optional int32 ttl = 4;         // Time to live in miliseconds     
+    optional int32 permission_level = 5;// Permission Level
+    optional int32 commstatus = 6;  // Communication Status
+    optional UUri sink = 7;         // Explicit destination URI
+    optional UUID reqid = 8;        // Request ID (used for response messages)
+    optional string token = 9;      // Authorization token used for TAP
+}
+
+
+/**
+ * uProtocol defines message types. Using the message type, validation can be performed to ensure transport
+ * validity of the data in the {@link UAttributes}.
+ */
+enum UMessageType {
+    PUBLISH = 0;    // Publish or notification
+    REQUEST = 1;    // Request 
+    RESPONSE = 2;   // Response
+}
+
+
+enum UPriority{
+    // Low Priority. No bandwidth assurance such as File Transfer.
+    CS0 = 0;
+
+    // Standard, undifferentiated application such as General (unclassified).
+    CS1 = 1;
+
+    // Operations, Administration, and Management such as Streamer messages (sub, connect, etc…)
+    CS2 = 2;
+
+    // Multimedia streaming such as Video Streaming
+    CS3 = 3;
+
+    // Real-time interactive such as High priority (rpc events)
+    CS4 = 4;
+
+    // Signaling such as Important
+    CS5 = 5;
+
+    // Network control such as Safety Critical
+    CS6 = 6;
+}
+
+

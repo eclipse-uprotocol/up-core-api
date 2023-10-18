@@ -2,7 +2,7 @@
  * Copyright (c) 2023 General Motors GTO LLC
  *
  * Licensed to the Apache Software Foundation (ASF) under one
-  * or more contributor license agreements.  See the NOTICE file
+ * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
  * regarding copyright ownership.  The ASF licenses this file
  * to you under the Apache License, Version 2.0 (the
@@ -23,35 +23,12 @@
  package uprotocol.v1;
  
  option java_package = "org.eclipse.uprotocol.v1";
+ option java_outer_classname = "UUIDProto";
  option java_multiple_files = true;
  
  
- // File Message
- // Files can be attached to uProtocol in the headeras 
- message File {
-   // RFC8089 formatted filename URI
-   string name = 1;
- 
-   // File size attribute
-   optional uint64 size = 2;
-
-   Checksum checksum = 3;
-
- }
-
- message BatchFiles {
-    repeated File files = 1;
- }
-
- // File Checksum
- message Checksum {
-    // Checksum type
-    enum Type {
-        MD5 = 0;    // MD5SUM
-        SHA1 = 1;   // SHA1SUM
-    }
-
-    Type type = 1;      // Type of Checksum
-    bytes value = 2;    // The checksum value
- }
- 
+ // Data representation of uProtocol <b>UUID</b>.
+ message UUID {
+    sfixed64 msb = 1; // msb of the UUID
+    sfixed64 lsb = 2; // lsb of the UUID
+}

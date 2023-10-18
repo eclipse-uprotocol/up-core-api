@@ -2,7 +2,7 @@
  * Copyright (c) 2023 General Motors GTO LLC
  *
  * Licensed to the Apache Software Foundation (ASF) under one
-  * or more contributor license agreements.  See the NOTICE file
+ * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
  * regarding copyright ownership.  The ASF licenses this file
  * to you under the Apache License, Version 2.0 (the
@@ -22,36 +22,19 @@
 
  package uprotocol.v1;
  
+ import "uri.proto";
+ import "uattributes.proto";
+ import "upayload.proto";
+ 
  option java_package = "org.eclipse.uprotocol.v1";
+ option java_outer_classname = "UTransportProto";
  option java_multiple_files = true;
- 
- 
- // File Message
- // Files can be attached to uProtocol in the headeras 
- message File {
-   // RFC8089 formatted filename URI
-   string name = 1;
- 
-   // File size attribute
-   optional uint64 size = 2;
 
-   Checksum checksum = 3;
+// UMessage is the envelop that wraps the topic, payload and attributes
+message UMessage {
+    UUri topic = 1;                 // The topic of the message
+    UAttributes attributes = 2;     // The attributes of the message
+    UPayload payload = 3;           // The payload of the message
+}
 
- }
-
- message BatchFiles {
-    repeated File files = 1;
- }
-
- // File Checksum
- message Checksum {
-    // Checksum type
-    enum Type {
-        MD5 = 0;    // MD5SUM
-        SHA1 = 1;   // SHA1SUM
-    }
-
-    Type type = 1;      // Type of Checksum
-    bytes value = 2;    // The checksum value
- }
  
