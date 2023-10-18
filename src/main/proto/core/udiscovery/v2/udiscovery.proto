@@ -34,7 +34,7 @@ option java_multiple_files = true;
 service uDiscovery {
   option (name) = "core.udiscovery"; // Service name
   option (version_major) = 2;
-  option (version_minor) = 0;
+  option (version_minor) = 1;
   option (id) = 1;
 
   // Used by any uProtocol application or service to find service instances
@@ -341,8 +341,8 @@ message NodeNotificationTopic {
 message ResolveUriRequest {
   // The URI to resolve
   oneof uri {
-    string long_uri = 1; // UUri serialized in Long Format (string)
-    bytes micro_uri = 2; // UUri serialized in Micro format (byte array)
+    string long = 1; // UUri serialized in Long Format (string)
+    bytes micro = 2; // UUri serialized in Micro format (byte array)
   }
 }
 
@@ -350,9 +350,6 @@ message ResolveUriRequest {
 // Response message returned from ResolveUri() API containing the resolved Long and Micro
 // serialized Uris and a status
 message ResolveUriResponse {
-
-  string long_uri = 1; // UUri serialized in Long Format (string)
-  bytes micro_uri = 2; // UUri serialized in Micro format (byte array)
-  
+  UUri uri = 1;                 // Resolved UUri  
   google.rpc.Status status = 3; // Return code for the rpc call
 }

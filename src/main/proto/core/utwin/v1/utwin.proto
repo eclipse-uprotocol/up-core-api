@@ -23,8 +23,8 @@ syntax = "proto3";
 package uprotocol.core.utwin.v1;
 
 import "google/rpc/status.proto";
-import "topic.proto";
 import "options.proto";
+import "uri.proto";
 import "spec.proto"; // CloudEvents proto
 
 option java_package = "org.eclipse.uprotocol.core.utwin.v1";
@@ -35,7 +35,7 @@ option java_multiple_files = true;
 service uTwin {
   option (name) = "core.utwin"; // Service name
   option (version_major) = 1;
-  option (version_minor) = 0;
+  option (version_minor) = 1;
   option (id) = 26;
 
   // A uE calls this API to retrieve the last event that was published on Topic
@@ -43,12 +43,12 @@ service uTwin {
   // - status.Code is set to OK,
   // - the event field contains the last event
   // The event is retrieved either from its own internal storage, or by explicitly
-  // requesting from the uE "owning" the Topic to publish a new event that the uTwin 
+  // requesting from the uE "owning" the UUri (topic) to publish a new event that the uTwin 
   // will subsequently receive
   // If uTwin fails to retrieve the last event:
   // - status.Code = NOT_FOUND | PERMISSION_DENIED
   // - event is left empty
-  rpc GetLastEvent(Topic) returns (GetLastEventResponse) {
+  rpc GetLastEvent(UUri) returns (GetLastEventResponse) {
     option (method_id) = 1;
   }
 

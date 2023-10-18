@@ -26,7 +26,7 @@ import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 import "google/rpc/code.proto";
-import "topic.proto";
+import "uri.proto";
 import "options.proto";
 
 option java_package = "org.eclipse.uprotocol.core.usubscription.v2";
@@ -37,7 +37,7 @@ option java_multiple_files = true;
 service uSubscription {
   option (name) = "core.usubscription"; // Service name
   option (version_major) = 2;
-  option (version_minor) = 1;
+  option (version_minor) = 2;
   option (id) = 0;
 
   // A consumer (application) calls this API to subscribe to a topic.
@@ -173,7 +173,7 @@ message EventDeliveryConfig {
 // Passed to Subscribe() contains the subscription request information
 message SubscriptionRequest {
   // uProtocol uri topic to subscribe too
-  Topic topic = 1;
+  UUri topic = 1;
 
   // Subscribers's information (who is calling Subscribe)
   SubscriberInfo subscriber = 2;
@@ -198,7 +198,7 @@ message SubscriptionResponse {
 // to as well as the subscriber identification
 message UnsubscribeRequest {
   // Topic to be unsubscribed to
-  Topic topic = 1;
+  UUri topic = 1;
 
   // Subscriber identification
   SubscriberInfo subscriber = 2;
@@ -209,7 +209,7 @@ message UnsubscribeRequest {
 // a particular topic
 message FetchSubscribersRequest {
   // Topic we wish to find the subscribers for
-  Topic topic = 1;
+  UUri topic = 1;
 
   // Offset in the fetch requests
   optional uint32 offset = 2;
@@ -234,7 +234,7 @@ message FetchSubscribersResponse {
 // is returned from FetchSubscriptions() API.
 message Subscription {
   // List of Subscription records
-  Topic topic = 1;
+  UUri topic = 1;
 
   // Information about the subscriber who changed their subscription
   SubscriberInfo subscriber = 2;
@@ -254,7 +254,7 @@ message Subscription {
 message FetchSubscriptionsRequest {
     oneof request {
       // Topic to register/unregister to receive subscription change notifications
-      Topic topic = 1;
+      UUri topic = 1;
 
       // Subscribers's information
       SubscriberInfo subscriber = 2;
@@ -283,7 +283,7 @@ message FetchSubscriptionsResponse {
 // as information about the subscriber who wishes to receive said notifications
 message NotificationsRequest {
     // Topic to register/unregister to receive subscription change notifications
-    Topic topic = 1;
+    UUri topic = 1;
 
     // Subscribers's information
     SubscriberInfo subscriber = 2;
@@ -293,14 +293,14 @@ message NotificationsRequest {
 // Message passed to CreateTopic()
 message CreateTopicRequest {
   // uProtocol Topic
-  Topic topic = 1;
+  UUri topic = 1;
 }
 
 
 // Message passed to DeprecateTopic()
 message DeprecateTopicRequest {
   // uProtocol Topic
-  Topic topic = 1;
+  UUri topic = 1;
 }
 
 
@@ -311,7 +311,7 @@ message DeprecateTopicRequest {
 // any uE that called RegisterForNotifications().
 message Update {
   // List of Subscription records
-  Topic topic = 1;
+  UUri topic = 1;
 
   // Information about the subscriber who changed their subscription
   SubscriberInfo subscriber = 2;
