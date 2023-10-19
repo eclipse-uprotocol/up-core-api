@@ -38,18 +38,14 @@ service uDiscovery {
   option (id) = 1;
 
   // Used by any uProtocol application or service to find service instances
-  // location, and its current version using either long or short form URI
-  // per https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/uri.adoc[URI Specifications]
-  // What is returned is a list of Uri strings like the following:
-  // Example Application calls:
-  // ```
-  //    lookupUri(//*/core.example”)
-  // ```
-  // Returns:
-  // ```
-  // [//device.domain/core.example/2.0”, “/core.example/1.0”]
-  // ```
-  rpc LookupUri(UriRequest) returns (UriResponse) {
+  // locations. The passed UUri contains valid UEntity, UResource, and UAuthority information
+  // for a query.
+  // What is returned is a list of UUris that match the query. Possible return values are:
+  // 1. status.OK: Query lookup was successful
+  // 2. status.NOT_FOUND: No matching UUris were found
+  // 3. status.INVALID_ARGUMENT: The passed UUri is invalid
+  // 4. status.PERMISSION_DENIED: The caller does not have permission to perform the query
+  rpc LookupUri(UUri) returns (LookupUriResponse) {
     option (method_id) = 1;
   }
 
@@ -143,7 +139,7 @@ message PropertyValue {
 
 // Node can be domain, device, service, resource, method, etc...
 message Node {
-  // uProtocol URI pointing to this node
+  // uProtocol long form URI pointing to this node
   string uri = 1;
 
   // List of child nodes under this node
@@ -352,4 +348,12 @@ message ResolveUriRequest {
 message ResolveUriResponse {
   UUri uri = 1;                 // Resolved UUri  
   google.rpc.Status status = 3; // Return code for the rpc call
+}
+
+
+// Return value from LookupUri() API that contains the batch of Uris for the 
+// lookup and status from the API call
+message LookupUriResponse {
+  UUriBatch uris = 1;           // Batch of Uris
+  google.rpc.Status status = 2; // Return code for the rpc call
 }

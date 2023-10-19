@@ -41,7 +41,7 @@ service uTwin {
   // A uE calls this API to retrieve the last event that was published on Topic
   // If the uTwin succeeds in retrieving the event, the response is set as follows:
   // - status.Code is set to OK,
-  // - the event field contains the last event
+  // - the messages field contains the last event
   // The event is retrieved either from its own internal storage, or by explicitly
   // requesting from the uE "owning" the UUri (topic) to publish a new event that the uTwin 
   // will subsequently receive
@@ -66,6 +66,20 @@ service uTwin {
     option (method_id) = 2;
   }
 
+  // A uE calls this API to retrieve a collection of last event for all topics in the UUriBatch.
+  // If the uTwin succeeds in retrieving all events, the response is set as follows:
+  // - status.Code is set to OK,
+  // - the messages field contains the last event
+  // The event is retrieved either from its own internal storage, or by explicitly
+  // requesting from the uE "owning" the UUri (topic) to publish a new event that the uTwin 
+  // will subsequently receive
+  // If uTwin fails to retrieve the last event:
+  // - status.Code = NOT_FOUND | PERMISSION_DENIED
+  // - event is left empty
+  rpc GetLastEvents(UUriBatch) returns (GetLastEventResponse) {
+    option (method_id) = 3;
+  }
+
 }
 
 // Message returned by the rpc GetLastEvent
@@ -74,5 +88,5 @@ service uTwin {
 // event contains the CloudEvent that was requested
 message GetLastEventResponse {
   google.rpc.Status status = 1;
-  UMessage event = 2;
+  repeated UMessage messages = 2;
 }

@@ -22,9 +22,6 @@ syntax = "proto3";
 
 package uprotocol.v1;
 
-import "google/rpc/status.proto";
-import "google/protobuf/any.proto";
-
 option java_package = "org.eclipse.uprotocol.v1";
 option java_outer_classname = "UUriProto";
 option java_multiple_files = true;
@@ -42,9 +39,6 @@ message UUri {
   UAuthority authority = 1;
   UEntity entity = 2;
   UResource resource = 3;
-  
-  // Any additional details needed
-  repeated google.protobuf.Any details = 10;
 }
 
 
@@ -92,49 +86,11 @@ message UResource {
   string name = 1;      // Name of the resource
   string instance = 2;  // Instance of the resource
   optional string message = 3;   // Message type for the resource
-  uint32 id = 4;        // ID that represents the method/topic for the resource
+  uint32 id = 4;        // Numerical representation of the UResource portion of the UUri
 }
 
 
 // Repeated list of URIs that can be used for batching APIs
-message BatchUUri {
+message UUriBatch {
   repeated UUri uris = 1; // Repeated list of URIs
-}
-
-
-// Uri passed to an RPC call containing the uri, credentials, and any other
-// information that might be required
-message UriRequest {
-  // uProtocol URI serialized in Long format per 
-  // https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/uri.adoc[URI Specifications]
-  UUri uri = 1;
-
-  // Authorization credentials
-  map <string, google.protobuf.Any>  credentials = 2;
-
-  // How many do we want to return when the response is a batch.
-  optional int32 limit = 3;
-
-  // Where to start in a batch response, default is 0 when not specified
-  optional int32 offset = 4;
-
-  // Any additional details needed
-  repeated google.protobuf.Any details = 5;
-}
-
-
-// Return value for the lookupUriRequest
-message UriResponse {
-  repeated UUri uris = 1;  // List of qualified (absolute) uris
-  google.rpc.Status result = 2;  // Return code for the rpc call
-}
-
-
-// Batch of Uris
-message UriBatch {
-  // List of uris
-  repeated string uris = 1;
-
-  // Set to true if the batch did not return all records
-  bool more_records = 2;
 }

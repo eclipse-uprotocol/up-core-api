@@ -233,7 +233,7 @@ message FetchSubscribersResponse {
 // Subscription Message. Contains all the information about a subscription that
 // is returned from FetchSubscriptions() API.
 message Subscription {
-  // List of Subscription records
+  // Subscription topic
   UUri topic = 1;
 
   // Information about the subscriber who changed their subscription
@@ -310,7 +310,7 @@ message DeprecateTopicRequest {
 // a subscription. Subscribers automatically receive this notification along with
 // any uE that called RegisterForNotifications().
 message Update {
-  // List of Subscription records
+  // Subscribed topic whos state has changed
   UUri topic = 1;
 
   // Information about the subscriber who changed their subscription
