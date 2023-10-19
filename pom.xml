@@ -61,6 +61,7 @@
                         <goals>
                             <goal>compile</goal>
                             <goal>compile-cpp</goal>
+                            <goal>compile-python</goal>
                         </goals>
                     </execution>
                      <execution>
