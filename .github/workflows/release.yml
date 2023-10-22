@@ -45,6 +45,6 @@ jobs:
 
     - if: cancelled() || failure()
       run: |
-        mvn --batch-mode release:rollback
+        mvn --batch-mode -Prelease release:rollback
       env:
         GH_TOKEN: ${{ github.token }}
