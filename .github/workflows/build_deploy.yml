@@ -1,4 +1,4 @@
-name: Build and Deploy snapshot
+name: CI
 
 on:
   push:
