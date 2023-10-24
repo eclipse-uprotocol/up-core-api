@@ -29,17 +29,19 @@ option java_package = "org.eclipse.uprotocol.v1";
 
 // The UPayload contains the clean Payload information along with its raw serialized structure of a byte[].
 message UPayload {
-   // The data can be either passed by value (in the byte aray) or by reference (a pointer)
+
+   // The data to be transmitted passed by either by value or reference
    oneof data {
-        bytes value = 1;
-        uint64 reference = 2;
+        bytes value = 1;        // copy of the data (passed-by-value)
+        fixed64 reference = 2;  // Pointer to the data (e.g. a memory address) passed-by-reference
+        fixed64 shared = 3;     // Similar to reference however shared contains a shared memory address
    }
 
    // Lenth of the data in bytes
-   optional uint32 length = 3;
+   optional uint32 length = 5;
 
    // How the data is serialized (its format)
-   SerializationHint hint = 4;
+   SerializationHint hint = 6;
 }
 
 // Serialization Hint for the data
