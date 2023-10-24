@@ -30,7 +30,7 @@ jobs:
       run: |
         git config --global user.name "${GITHUB_ACTOR}"
         git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-        mvn -B -Prelease clean release:prepare release:perform
+        mvn -B clean release:prepare release:perform
       env:
         OSSRH_USER: ${{ secrets.ORG_OSSRH_USERNAME }}
         OSSRH_PASSWORD: ${{ secrets.ORG_OSSRH_PASSWORD }}
@@ -39,6 +39,6 @@ jobs:
 
     - if: cancelled() || failure()
       run: |
-        mvn -B -Prelease release:rollback
+        mvn -B release:rollback
       env:
         GH_TOKEN: ${{ github.token }}
