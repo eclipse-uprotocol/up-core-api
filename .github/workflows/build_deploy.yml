@@ -1,4 +1,4 @@
-name: CI
+name: continuous_integration
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  build-deploy:
 
     runs-on: ubuntu-latest
     permissions:
