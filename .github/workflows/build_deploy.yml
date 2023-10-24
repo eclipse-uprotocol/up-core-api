@@ -1,4 +1,4 @@
-name: Build and Deploy snapshot
+name: continuous-integration
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-deploy:
 
     runs-on: ubuntu-latest
     permissions:

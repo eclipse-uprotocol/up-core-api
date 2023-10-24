@@ -1,4 +1,4 @@
-name: Publish github maven package
+name: DRAFT Publish github maven package
 
 on:
   workflow_dispatch:
