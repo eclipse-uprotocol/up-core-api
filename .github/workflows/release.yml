@@ -30,7 +30,7 @@ jobs:
       run: |
         git config --global user.name "${GITHUB_ACTOR}"
         git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-        mvn -B clean release:prepare release:perform promote -DbuildPromotionProfileId=ossrh
+        mvn -B clean release:prepare release:perform nexus-staging:promote -DbuildPromotionProfileId=ossrh
       env:
         OSSRH_USER: ${{ secrets.ORG_OSSRH_USERNAME }}
         OSSRH_PASSWORD: ${{ secrets.ORG_OSSRH_PASSWORD }}
