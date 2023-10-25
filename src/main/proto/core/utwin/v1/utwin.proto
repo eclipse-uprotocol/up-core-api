@@ -25,7 +25,7 @@ package uprotocol.v1.core.utwin.v1;
 import "google/rpc/status.proto";
 import "options.proto";
 import "uri.proto";
-import "umessage.proto"; // UMessage
+import "spec.proto"; // CloudEvents proto
 
 option java_package = "org.eclipse.uprotocol.v1.core.utwin.v1";
 option java_outer_classname = "UTwinProto";
@@ -62,7 +62,7 @@ service uTwin {
   // - INVALID argument if uTwin encountered an issue with CE content (source field in particular) 
   // - PERMISSION_DENIED if requesting uE does not have permission to access the Topic
   // - RESOURCE_EXHAUSTED if uTwin has no more memory available to store new CEs
-  rpc SetLastEvent(UMessage) returns (google.rpc.Status) {
+  rpc SetLastEvent(io.cloudevents.v1.CloudEvent) returns (google.rpc.Status) {
     option (method_id) = 2;
   }
 
@@ -76,7 +76,7 @@ service uTwin {
   // If uTwin fails to retrieve the last event:
   // - status.Code = NOT_FOUND | PERMISSION_DENIED
   // - event is left empty
-  rpc GetLastEvents(UUriBatch) returns (GetLastEventResponse) {
+  rpc GetLastEvents(UUriBatch) returns (GetLastEventsResponse) {
     option (method_id) = 3;
   }
 
@@ -88,5 +88,14 @@ service uTwin {
 // event contains the CloudEvent that was requested
 message GetLastEventResponse {
   google.rpc.Status status = 1;
-  repeated UMessage messages = 2;
+  io.cloudevents.v1.CloudEvent event = 2;
+}
+
+// Message returned by the rpc GetLastEvent
+// status indicates if the rpc succeeded, and if not, provides insights
+// by return specific error codes (see comment on the rpc itself)
+// event contains the CloudEvent that was requested
+message GetLastEventsResponse {
+  google.rpc.Status status = 1;
+  repeated io.cloudevents.v1.CloudEvent events = 2;
 }
