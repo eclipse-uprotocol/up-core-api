@@ -1,4 +1,4 @@
-name: verify-pr
+name: Verify PR
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-test:
+  verify-pr:
 
     runs-on: ubuntu-latest
 
