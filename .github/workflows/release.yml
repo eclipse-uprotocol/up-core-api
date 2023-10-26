@@ -29,13 +29,13 @@ jobs:
       run: |
         git config --global user.name "${GITHUB_ACTOR}"
         git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-        # mvn -B clean release:prepare release:perform nexus-staging:promote -DstagingRepositoryId=ossrh -DbuildPromotionProfileId=ossrh
-        mvn -B clean release:perform nexus-staging:promote -DstagingRepositoryId=ossrh -DbuildPromotionProfileId=ossrh
+        mvn -B clean release:prepare release:perform nexus-staging:promote -DstagingRepositoryId=ossrh -DbuildPromotionProfileId=ossrh
+        # mvn -B clean release:perform nexus-staging:promote -DstagingRepositoryId=ossrh -DbuildPromotionProfileId=ossrh
       env:
         OSSRH_USER: ${{ secrets.ORG_OSSRH_USERNAME }}
         OSSRH_PASSWORD: ${{ secrets.ORG_OSSRH_PASSWORD }}
         GPG_PASSPHRASE: ${{ secrets.ORG_GPG_PASSPHRASE }}
-        GH_TOKEN: ${{ github.token }}
+        GH_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
 
     - if: cancelled() || failure()
       run: |
