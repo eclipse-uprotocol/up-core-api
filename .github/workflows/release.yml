@@ -12,7 +12,13 @@ jobs:
       packages: write
 
     steps:
-    - uses: actions/checkout@v3
+    - run: |
+        git config --global user.name 'eclipse-uprotocol-bot'
+        git config --global user.email 'uprotocol-bot@eclipse.org'
+
+    - uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.BOT_GITHUB_TOKEN }}
 
     - name: Set up Apache Maven Central
       uses: actions/setup-java@v3
@@ -27,8 +33,6 @@ jobs:
 
     - name: Release to Maven central
       run: |
-        git config --global user.name 'eclipse-uprotocol-bot'
-        git config --global user.email 'uprotocol-bot@eclipse.org'
         mvn -B clean release:prepare release:perform nexus-staging:promote -DstagingRepositoryId=ossrh -DbuildPromotionProfileId=ossrh
         # mvn -B clean release:perform nexus-staging:promote -DstagingRepositoryId=ossrh -DbuildPromotionProfileId=ossrh
       env:
@@ -36,9 +40,11 @@ jobs:
         OSSRH_PASSWORD: ${{ secrets.ORG_OSSRH_PASSWORD }}
         GPG_PASSPHRASE: ${{ secrets.ORG_GPG_PASSPHRASE }}
         GH_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
 
     - if: cancelled() || failure()
       run: |
         mvn -B release:rollback
       env:
         GH_TOKEN: ${{ github.token }}
+        GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
