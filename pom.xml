@@ -10,12 +10,14 @@
     <packaging>jar</packaging>
     <url>https://github.com/eclipse-uprotocol/uprotocol-core-api/</url>
 
+
     <licenses>
       <license>
         <name>The Apache License, Version 2.0</name>
         <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
       </license>
     </licenses>
+
 
     <developers>
         <developer>
@@ -26,6 +28,7 @@
         </developer>
     </developers>
 
+
     <properties>
         <protobuf.version>3.21.10</protobuf.version>
         <assertj-core.version>3.16.1</assertj-core.version>
@@ -35,12 +38,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+
     <scm>
         <connection>scm:git:${project.scm.url}</connection>
         <developerConnection>scm:git:${project.scm.url}</developerConnection>
         <url>https://github.com/eclipse-uprotocol/uprotocol-core-api.git</url>
         <tag>HEAD</tag>
     </scm>
+
 
     <build>
         <extensions>
@@ -123,50 +128,6 @@
         </plugins>
     </build>
 
-    <distributionManagement>
-      <snapshotRepository>
-        <id>ossrh</id>
-        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-      </snapshotRepository>
-      <repository>
-       <id>ossrh</id>
-       <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-      </repository>
-    </distributionManagement>
-
-    <profiles>
-        <profile>
-            <id>release</id>
-            <build>
-                <plugins>
-
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.1.0</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <gpgArguments>
-                                <arg>--pinentry-mode</arg>
-                                <arg>loopback</arg>
-                            </gpgArguments>
-                            <passphraseServerId>gpg.passphrase</passphraseServerId>
-                        </configuration>
-                    </plugin>
-                        
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
 
     <dependencyManagement>
         <dependencies>
@@ -179,7 +140,8 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-         
+
+    
     <dependencies>
 
         <!-- https://mvnrepository.com/artifact/io.cloudevents/cloudevents-protobuf -->
@@ -228,5 +190,52 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-         
+
+    
+    <distributionManagement>
+      <snapshotRepository>
+        <id>ossrh</id>
+        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      </snapshotRepository>
+      <repository>
+       <id>ossrh</id>
+       <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      </repository>
+    </distributionManagement>
+
+    
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                            <passphraseServerId>gpg.passphrase</passphraseServerId>
+                        </configuration>
+                    </plugin>
+                        
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+
 </project>
