@@ -5,7 +5,7 @@
     <artifactId>uprotocol-core-api</artifactId>
     <name>uProtocol Core uEs API</name>
     <description>This project contains the built artifacts for core uProtocol services (uSubscription, uDiscovery, uTwin, etc..). Artifacts include language specific messages and client/server stubs</description>
-    <version>1.4.27-SNAPSHOT</version>
+    <version>1.4.28-SNAPSHOT</version>
     <packaging>jar</packaging>
     <url>https://github.com/eclipse-uprotocol/uprotocol-core-api/</url>
 
@@ -77,7 +77,7 @@
             <plugin>
                <groupId>org.sonatype.plugins</groupId>
                <artifactId>nexus-staging-maven-plugin</artifactId>
-               <version>1.6.7</version>
+               <version>1.6.9</version>
                <extensions>true</extensions>
                <configuration>
                  <serverId>ossrh</serverId>
