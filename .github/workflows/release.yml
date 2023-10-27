@@ -33,11 +33,7 @@ jobs:
 
     - name: Stage to Nexus and Release to Maven central
       run: |
-        mvn -B versions:set -DnewVersion=1.4.26
-        mvn -B clean deploy -P release
-        #1 mvn -B release:clean release:prepare -P release release:perform
-        # mvn -B clean release:prepare release:perform nexus-staging:promote -DstagingRepositoryId=ossrh -DbuildPromotionProfileId=ossrh
-        # mvn -B clean release:perform nexus-staging:promote -DstagingRepositoryId=ossrh -DbuildPromotionProfileId=ossrh
+        mvn -B release:clean release:prepare -P release release:perform
       env:
         OSSRH_USER: ${{ secrets.ORG_OSSRH_USERNAME }}
         OSSRH_PASSWORD: ${{ secrets.ORG_OSSRH_PASSWORD }}
@@ -47,8 +43,7 @@ jobs:
 
     - if: cancelled() || failure()
       run: |
-        mvn -B nexus-staging:drop
-        # mvn -B release:rollback nexus-staging:drop
+        mvn -B release:rollback
       env:
-        GH_TOKEN: ${{ github.token }}
+        GH_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
