@@ -3,8 +3,7 @@ name: Continuous Integration
 on:
   push:
     branches:
-      - main
-      - stage_nexus
+      - '*'
 
 jobs:
   build-and-deploy:
