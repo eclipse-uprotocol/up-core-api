@@ -42,7 +42,6 @@
         <connection>scm:git:${project.scm.url}</connection>
         <developerConnection>scm:git:${project.scm.url}</developerConnection>
         <url>https://github.com/eclipse-uprotocol/uprotocol-core-api.git</url>
-<!--         <tag>uprotocol-core-api-1.4.23</tag> -->
       <tag>HEAD</tag>
   </scm>
 
@@ -97,7 +96,6 @@
                 <configuration>
                     <useReleaseProfile>false</useReleaseProfile>
                     <releaseProfiles>release</releaseProfiles>
-<!--                     <goals>deploy nexus-staging:release</goals> -->
                     <goals>deploy</goals>
                 </configuration>
             </plugin>
