@@ -95,7 +95,7 @@
                 <configuration>
                     <useReleaseProfile>false</useReleaseProfile>
                     <releaseProfiles>release</releaseProfiles>
-                    <goals>deploy</goals>
+                    <goals>deploy nexus-staging:release</goals>
                 </configuration>
             </plugin>
             
