@@ -33,7 +33,7 @@ jobs:
 
     - name: Stage to Nexus and Release to Maven central
       run: |
-        mvn -B clean release:prepare -P release deploy release:perform
+        mvn -B release:clean release:prepare -P release release:perform
         # mvn -B clean release:prepare release:perform nexus-staging:promote -DstagingRepositoryId=ossrh -DbuildPromotionProfileId=ossrh
         # mvn -B clean release:perform nexus-staging:promote -DstagingRepositoryId=ossrh -DbuildPromotionProfileId=ossrh
       env:
