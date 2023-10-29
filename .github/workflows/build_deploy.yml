@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-deploy:
-    if: github.event.ref == 'refs/heads/main'
+    if: github.event.ref == 'refs/heads/finetune_release'
     runs-on: ubuntu-latest
     permissions:
       contents: write
