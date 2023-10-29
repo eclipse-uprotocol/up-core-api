@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-deploy:
-
+    if: github.event.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -15,8 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - if: github.event.ref_name == 'main'
-      name: Set up Apache Maven Central
+    - name: Set up Apache Maven Central
       uses: actions/setup-java@v3
       with: # configure settings.xml
         distribution: 'temurin'
@@ -27,8 +26,7 @@ jobs:
         gpg-private-key: ${{ secrets.ORG_GPG_PRIVATE_KEY }}
         gpg-passphrase: GPG_PASSPHRASE
 
-    - if: github.event.ref_name == 'main'
-      name: Build and Publish to Apache Maven Central
+    - name: Build and Publish to Apache Maven Central
       run: mvn clean deploy
       env:
         OSSRH_USER: ${{ secrets.ORG_OSSRH_USERNAME }}
