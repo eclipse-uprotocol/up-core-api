@@ -38,17 +38,17 @@ service uTwin {
   option (version_minor) = 0;
   option (id) = 26;
 
-  // A uE calls this API to retrieve the last event that was published on Topic
-  // If the uTwin succeeds in retrieving the event, the response is set as follows:
+  // A uE calls this API to retrieve one or more last events for a given list of topics.
+  // If the uTwin succeeds in retrieving the events, the response is set as follows:
   // - status.Code is set to OK,
-  // - the event field contains the last event
-  // The event is retrieved either from its own internal storage, or by explicitly
-  // requesting from the uE "owning" the Topic to publish a new event that the uTwin 
+  // - the events field contains 1 or more last events for the requested topics
+  // Events are retrieved either from its own internal storage, or by explicitly
+  // requesting the uE "owning" the Topic to publish a new event that the uTwin 
   // will subsequently receive
-  // If uTwin fails to retrieve the last event:
+  // If uTwin fails to retrieve any of the requested topics, the response is set as follows:
   // - status.Code = NOT_FOUND | PERMISSION_DENIED
   // - event is left empty
-  rpc GetLastEvent(Topic) returns (GetLastEventResponse) {
+  rpc GetLastEvents(GetLastEventsRequest) returns (GetLastEventsResponse) {
     option (method_id) = 1;
   }
 
@@ -68,11 +68,20 @@ service uTwin {
 
 }
 
-// Message returned by the rpc GetLastEvent
-// status indicates if the rpc succeeded, and if not, provides insights
-// by return specific error codes (see comment on the rpc itself)
-// event contains the CloudEvent that was requested
-message GetLastEventResponse {
+// Message returned by the rpc GetLastEvents
+message GetLastEventsResponse {
+  // Status indicates if the rpc succeeded, and if not, provides insights
+  // by return specific error codes (see comment on the rpc itself).<br>
   google.rpc.Status status = 1;
-  io.cloudevents.v1.CloudEvent event = 2;
+  
+  // One or more events that were requested
+  repeated io.cloudevents.v1.CloudEvent events = 2;
+}
+
+
+// Message sent by the rpc GetLastEvents to request one or more events
+// for a set of topics
+message GetLastEventsRequest {
+  // List of topics for which the uTwin is requested to retrieve the last event
+  repeated Topic topics = 1;
 }
