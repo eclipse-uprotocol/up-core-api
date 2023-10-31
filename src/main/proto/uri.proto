@@ -36,24 +36,28 @@ option java_multiple_files = true;
 // the resources in the service. Defining a common URI for the system allows 
 // applications and/or services to publish and discover each other.<br>
 message UUri {
+  // Authority of the URI (ex. device name, address, id), if not present, UUri is local
   UAuthority authority = 1;
+  
+  // Software Entity information (ex. name, version, id)
   UEntity entity = 2;
+  
+  // Service Resource information (methods, topics, etc..)
   UResource resource = 3;
 }
 
 
 // An Authority represents the deployment location of a specific Software Entity.
-// Data representation of an <b>Authority</b>.<br> An Authority consists of a device,
-// a domain and an address for the device.<br>
-// Device and domain names are used as part of the URI for device and service discovery.
+// Authority can be represented in either a name (i.e example.com), ip address (205.236.147.1)
+// or an ID (i.e. VIN, SHA 128, or any other identifier that is less than 255 bytes.
+// *NOTE:* When Authority is empty (neither name, ip, or id is set) the authority
+// is local.
 message UAuthority {
-  bool isLocal = 1;     // True if local authority, false if remote authority
-  
   // Remote authority information
   oneof remote {
-    string name = 2;		// domain & device name as a string
-    bytes ip = 3; 			// IPv4 or IPv6 Address
-    bytes id = 4;			  // Unique ID for the device, could be a VIN, SHA 128, or any other identifier
+    string name = 1;		// domain & device name as a string
+    bytes ip = 2; 			// IPv4 or IPv6 Address
+    bytes id = 3;			  // Unique ID for the device, could be a VIN, SHA 128, or any other identifier
                         // *NOTE:* MAX length is 255 bytes
   }
 }
