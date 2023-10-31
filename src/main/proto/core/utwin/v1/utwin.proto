@@ -38,16 +38,11 @@ service uTwin {
   option (version_minor) = 0;
   option (id) = 26;
 
-  // A uE calls this API to retrieve one or more last events for a given list of topics.
-  // If the uTwin succeeds in retrieving the events, the response is set as follows:
-  // - status.Code is set to OK,
-  // - the events field contains 1 or more last events for the requested topics
-  // Events are retrieved either from its own internal storage, or by explicitly
-  // requesting the uE "owning" the Topic to publish a new event that the uTwin 
-  // will subsequently receive
-  // If uTwin fails to retrieve any of the requested topics, the response is set as follows:
-  // - status.Code = NOT_FOUND | PERMISSION_DENIED
-  // - event is left empty
+  // A uE calls this API to retrieve the last event for a given set of topics.<br>
+  // What is returned is a list of EventResponse with the status for event retreival
+  // and the event itself if uTwin was able to fetch it. uTwin will also return 
+  // status for those events that it was unable to fetch (i.e. due to NOT_FOUND 
+  // or PERMISSION_DENIED.<br>
   rpc GetLastEvents(GetLastEventsRequest) returns (GetLastEventsResponse) {
     option (method_id) = 1;
   }
@@ -68,14 +63,24 @@ service uTwin {
 
 }
 
-// Message returned by the rpc GetLastEvents
+
+// Message returned by the rpc GetLastEvents.<br>
 message GetLastEventsResponse {
-  // Status indicates if the rpc succeeded, and if not, provides insights
-  // by return specific error codes (see comment on the rpc itself).<br>
-  google.rpc.Status status = 1;
+  // List of one or more events and the results for fetching that topic
+  repeated EventResponse responses = 1;
+}
+
+
+// Response Event that contains the status and event per topic
+message EventResponse {
+  // Topic that was requested to be fetched
+  Topic topic = 1;
   
-  // One or more events that were requested
-  repeated io.cloudevents.v1.CloudEvent events = 2;
+  // Status (success or not) when fetching the last event for said topic
+  google.rpc.Status status = 2;
+  
+  // Event when the topic has been fetched successfully, otherwise empty
+  io.cloudevents.v1.CloudEvent event = 3;
 }
 
 
