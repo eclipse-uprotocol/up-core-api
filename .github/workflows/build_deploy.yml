@@ -1,17 +1,15 @@
-name: continuous-integration
+name: Continuous Integration
 
 on:
   push:
     branches:
-      - main
+      - '*'
 
 jobs:
   build-and-deploy:
-
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      packages: write
 
     steps:
     - uses: actions/checkout@v3
