@@ -38,17 +38,12 @@ service uTwin {
   option (version_minor) = 1;
   option (id) = 26;
 
-  // A uE calls this API to retrieve the last event that was published on Topic
-  // If the uTwin succeeds in retrieving the event, the response is set as follows:
-  // - status.Code is set to OK,
-  // - the messages field contains the last event
-  // The event is retrieved either from its own internal storage, or by explicitly
-  // requesting from the uE "owning" the UUri (topic) to publish a new event that the uTwin 
-  // will subsequently receive
-  // If uTwin fails to retrieve the last event:
-  // - status.Code = NOT_FOUND | PERMISSION_DENIED
-  // - event is left empty
-  rpc GetLastEvent(UUri) returns (GetLastEventResponse) {
+  // A uE calls this API to retrieve the last event for a given set of topics.<br>
+  // What is returned is a list of EventResponse with the status for event retreival
+  // and the event itself if uTwin was able to fetch it. uTwin will also return 
+  // status for those events that it was unable to fetch (i.e. due to NOT_FOUND 
+  // or PERMISSION_DENIED.<br>
+  rpc GetLastEvents(UUriBatch) returns (GetLastEventsResponse) {
     option (method_id) = 1;
   }
 
@@ -66,36 +61,24 @@ service uTwin {
     option (method_id) = 2;
   }
 
-  // A uE calls this API to retrieve a collection of last event for all topics in the UUriBatch.
-  // If the uTwin succeeds in retrieving all events, the response is set as follows:
-  // - status.Code is set to OK,
-  // - the messages field contains the last event
-  // The event is retrieved either from its own internal storage, or by explicitly
-  // requesting from the uE "owning" the UUri (topic) to publish a new event that the uTwin 
-  // will subsequently receive
-  // If uTwin fails to retrieve the last event:
-  // - status.Code = NOT_FOUND | PERMISSION_DENIED
-  // - event is left empty
-  rpc GetLastEvents(UUriBatch) returns (GetLastEventsResponse) {
-    option (method_id) = 3;
-  }
-
 }
 
-// Message returned by the rpc GetLastEvent
-// status indicates if the rpc succeeded, and if not, provides insights
-// by return specific error codes (see comment on the rpc itself)
-// event contains the CloudEvent that was requested
+
+// Response Event that contains the status and event per topic
 message GetLastEventResponse {
-  google.rpc.Status status = 1;
-  io.cloudevents.v1.CloudEvent event = 2;
+  // Topic that was requested to be fetched
+  UUri topic = 1;
+
+  // Status (success or not) when fetching the last event for said topic
+  google.rpc.Status status = 2;
+
+  // Event when the topic has been fetched successfully, otherwise empty
+  io.cloudevents.v1.CloudEvent event = 3;
 }
 
-// Message returned by the rpc GetLastEvent
-// status indicates if the rpc succeeded, and if not, provides insights
-// by return specific error codes (see comment on the rpc itself)
-// event contains the CloudEvent that was requested
+
+// Message returned by the rpc GetLastEvents.
 message GetLastEventsResponse {
-  google.rpc.Status status = 1;
-  repeated io.cloudevents.v1.CloudEvent events = 2;
+  // List of one or more events and the results for fetching that topic
+  repeated GetLastEventResponse responses = 2;
 }
