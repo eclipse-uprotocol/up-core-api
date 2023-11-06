@@ -41,7 +41,7 @@ message File {
 
 
 // Collection of Files (batch)
-message BatchFiles {
+message FileBatch {
   // Repeated list of 0 to n attached files
   repeated File files = 1;
 }

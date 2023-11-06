@@ -53,10 +53,10 @@ message UUri {
 // *NOTE:* When Authority is empty (neither name, ip, or id is set) the authority
 // is local.
 message UAuthority {
-  // Remote authority information
+  // Remote authority information, if not present, authority is local
   oneof remote {
     string name = 1;		// domain & device name as a string
-    bytes ip = 2; 			// IPv4 or IPv6 Address
+    bytes ip = 2; 			// IPv4 or IPv6 Address in byte format
     bytes id = 3;			  // Unique ID for the device, could be a VIN, SHA 128, or any other identifier
                         // *NOTE:* MAX length is 255 bytes
   }
