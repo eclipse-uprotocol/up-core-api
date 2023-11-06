@@ -331,7 +331,7 @@ message Update {
 // Structure used to build the subscription change notification topic
 message SubscriptionChangeNotification {
   // Service meta-data option definition - Topic identity
-  option (base_topic_id) = 0;
+  option (base_topic_id) = 1000;
 
   // Meta flags for generating the YAML
   Update.Resources resource_name = 1 [(resource_name_mask) = "*"];

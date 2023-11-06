@@ -40,11 +40,11 @@ service uDiscovery {
   // Used by any uProtocol application or service to find service instances
   // locations. The passed UUri contains valid UEntity, UResource, and UAuthority information
   // for a query.
-  // What is returned is a list of UUris that match the query. Possible return values are:
-  // 1. status.OK: Query lookup was successful
-  // 2. status.NOT_FOUND: No matching UUris were found
-  // 3. status.INVALID_ARGUMENT: The passed UUri is invalid
-  // 4. status.PERMISSION_DENIED: The caller does not have permission to perform the query
+  // What is returned is a list of UUris that match the query. Possible return values in status are:
+  // 1. code.OK: Query lookup was successful
+  // 2. code.NOT_FOUND: No matching UUris were found
+  // 3. code.INVALID_ARGUMENT: The passed UUri is invalid
+  // 4. code.PERMISSION_DENIED: The caller does not have permission to perform the query
   rpc LookupUri(UUri) returns (LookupUriResponse) {
     option (method_id) = 1;
   }
@@ -99,22 +99,27 @@ service uDiscovery {
     option (method_id) = 7;
   }
 
+
   // Register to receive Notifications to changes to one of more Nodes. The changes
   // are published on the notification topic: '/core.udiscovery/2/nodes#Update'
   rpc RegisterForNotifications(NotificationsRequest) returns (google.rpc.Status) {
     option (method_id) = 8;
   }
+  
 
   // Unregister for Node change notifications
   rpc UnregisterForNotifications(NotificationsRequest) returns (google.rpc.Status) {
     option (method_id) = 9;
   }
 
-  /**
-  * Resolve a serialized UUri from either long or micro to a fully qualified URI.
-  * @param request The serialized UUri either as a long or micro
-  * @return The fully qualified URI in ResolvedUriResponse
-  */
+  
+  // Resolve a UUri filling in the missing names/numbers from the Discovery database.
+  // If the resolution was successful, the resolved UUri containing names and numbers
+  // is returned along with the following status.code values:
+  // - code.OK: Resolution was successfull
+  // - code.NOT_FOUND: Unable to find the missing names or numbers for the passed UUri
+  // - code.INVALID_ARGUMENT: The passed UUri is invalid (missing names or numbers)
+  // - code.PERMISSION_DENIED: The caller does not have permission to perform the resolution
   rpc ResolveUri(ResolveUriRequest) returns (ResolveUriResponse) {
     option (method_id) = 10;
   }
@@ -317,34 +322,15 @@ message NotificationsRequest {
   optional int32 depth = 3;
 }
 
-
-
-// Node  Notification Topic
-// Service Meta-data structure used to build the notification topic when there are
-// changes to a Node in the database. This message build the topic:
-// '/core.udiscovery/2/nodes#Notification'.
-// **NODE:** This message definition is ONLY used to autogenerate the Node Change Notification topic.
-message NodeNotificationTopic {
-  // Service meta-data option definition - Topic identity
-  option (base_topic_id) = 0;
-
-  // Meta flags for generating the YAML
-  Notification.Resources resource_name = 1 [(resource_name_mask) = "*"];
-}
-
-
-// Request message passed to ResolveUri() API to resolve a passed Long or Micro Uri.
+// Request message passed to ResolveUri() API to resolve the missing names or numbers.
 message ResolveUriRequest {
-  // The URI to resolve
-  oneof uri {
-    string long = 1; // UUri serialized in Long Format (string)
-    bytes micro = 2; // UUri serialized in Micro format (byte array)
-  }
+  // The URI to resolve containing only names or numbers
+  UUri uri = 1;
 }
 
 
-// Response message returned from ResolveUri() API containing the resolved Long and Micro
-// serialized Uris and a status
+// Response message returned from ResolveUri() API containing a UUri and the 
+// status of the resolution.
 message ResolveUriResponse {
   UUri uri = 1;                 // Resolved UUri  
   google.rpc.Status status = 3; // Return code for the rpc call
@@ -356,4 +342,18 @@ message ResolveUriResponse {
 message LookupUriResponse {
   UUriBatch uris = 1;           // Batch of Uris
   google.rpc.Status status = 2; // Return code for the rpc call
+}
+
+
+// Node  Notification Topic
+// Service Meta-data structure used to build the notification topic when there are
+// changes to a Node in the database. This message build the topic:
+// '/core.udiscovery/2/nodes#Notification'.
+// **NODE:** This message definition is ONLY used to autogenerate the Node Change Notification topic.
+message NodeNotificationTopic {
+  // Service meta-data option definition - Topic identity
+  option (base_topic_id) = 1000;
+
+  // Meta flags for generating the YAML
+  Notification.Resources resource_name = 1 [(resource_name_mask) = "*"];
 }

@@ -27,31 +27,34 @@
  
  
  // File Message
- // Files can be attached to uProtocol in the headeras 
- message File {
-   // RFC8089 formatted filename URI
-   string name = 1;
+ // Files can be attached to uProtocol in the headers 
+message File {
+  // RFC8089 formatted filename URI
+  string name = 1;
  
-   // File size attribute
-   optional uint64 size = 2;
+  // File size attribute
+  optional uint64 size = 2;
 
-   Checksum checksum = 3;
+  // Optional file checksum
+  Checksum checksum = 3;
+}
 
- }
 
- message BatchFiles {
-    repeated File files = 1;
- }
+// Collection of Files (batch)
+message BatchFiles {
+  // Repeated list of 0 to n attached files
+  repeated File files = 1;
+}
 
- // File Checksum
- message Checksum {
-    // Checksum type
-    enum Type {
-        MD5 = 0;    // MD5SUM
-        SHA1 = 1;   // SHA1SUM
-    }
+// File Checksum
+message Checksum {
+  // Checksum type
+  enum Type {
+    MD5 = 0;    // MD5SUM
+    SHA1 = 1;   // SHA1SUM
+  }
 
-    Type type = 1;      // Type of Checksum
-    bytes value = 2;    // The checksum value
- }
+  Type type = 1;      // Type of Checksum
+  bytes value = 2;    // The checksum value
+}
  
