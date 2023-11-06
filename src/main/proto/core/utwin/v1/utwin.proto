@@ -35,7 +35,7 @@ option java_multiple_files = true;
 service uTwin {
   option (name) = "core.utwin"; // Service name
   option (version_major) = 1;
-  option (version_minor) = 1;
+  option (version_minor) = 0;
   option (id) = 26;
 
   // A uE calls this API to retrieve the last event for a given set of topics.<br>

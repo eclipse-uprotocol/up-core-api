@@ -20,21 +20,21 @@
  */
 syntax = "proto3";
 
-package uprotocol.v1.core.udiscovery.v2;
+package uprotocol.v1.core.udiscovery.v3;
 import "google/rpc/status.proto";
 import "google/protobuf/timestamp.proto";
 import "options.proto";
 import "uri.proto";
 
-option java_package = "org.eclipse.uprotocol.v1.core.udiscovery.v2";
+option java_package = "org.eclipse.uprotocol.v1.core.udiscovery.v3";
 option java_outer_classname = "UDiscoveryProto";
 option java_multiple_files = true;
 
 // Platform USE Discovery Service Interface
 service uDiscovery {
   option (name) = "core.udiscovery"; // Service name
-  option (version_major) = 2;
-  option (version_minor) = 1;
+  option (version_major) = 3;
+  option (version_minor) = 0;
   option (id) = 1;
 
   // Used by any uProtocol application or service to find service instances
