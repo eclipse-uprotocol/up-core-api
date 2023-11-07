@@ -78,7 +78,7 @@ service uSubscription {
   }
 
   // Register to receive subscription change notifications that are published on the
-  // 'up:/core.usubscription/2/subscriptions#Update'
+  // 'up:/core.usubscription/3/subscriptions#Update'
   rpc RegisterForNotifications(NotificationsRequest) returns (google.rpc.Status) {
     option (method_id) = 6;
   }
@@ -306,7 +306,7 @@ message DeprecateTopicRequest {
 
 // Subscription Update Message.
 // This Update message is sent from uSusbcription on the topic:
-// '/core.usubscription/2/subscriptions#Update' whenever there is a change to
+// '/core.usubscription/3/subscriptions#Update' whenever there is a change to
 // a subscription. Subscribers automatically receive this notification along with
 // any uE that called RegisterForNotifications().
 message Update {

@@ -101,7 +101,7 @@ service uDiscovery {
 
 
   // Register to receive Notifications to changes to one of more Nodes. The changes
-  // are published on the notification topic: '/core.udiscovery/2/nodes#Update'
+  // are published on the notification topic: '/core.udiscovery/3/nodes#Update'
   rpc RegisterForNotifications(NotificationsRequest) returns (google.rpc.Status) {
     option (method_id) = 8;
   }
@@ -268,7 +268,7 @@ message UpdatePropertyRequest {
 // Node Change Notification Message.
 // When uEs call RegisterForNotifications(), a Notification message is sent when the node either
 // changes, added, or removed. The topic used for the change notification is
-// '/core.udiscovery/2/nodes#Notification'.
+// '/core.udiscovery/3/nodes#Notification'.
 message Notification {
   // The URI to the node that has changed
   string uri = 1;
@@ -348,7 +348,7 @@ message LookupUriResponse {
 // Node  Notification Topic
 // Service Meta-data structure used to build the notification topic when there are
 // changes to a Node in the database. This message build the topic:
-// '/core.udiscovery/2/nodes#Notification'.
+// '/core.udiscovery/3/nodes#Notification'.
 // **NODE:** This message definition is ONLY used to autogenerate the Node Change Notification topic.
 message NodeNotificationTopic {
   // Service meta-data option definition - Topic identity
