@@ -20,13 +20,13 @@
  */
 syntax = "proto3";
 
-package uprotocol.v1.core.udiscovery.v3;
+package uprotocol.core.udiscovery.v3;
 import "google/rpc/status.proto";
 import "google/protobuf/timestamp.proto";
 import "options.proto";
 import "uri.proto";
 
-option java_package = "org.eclipse.uprotocol.v1.core.udiscovery.v3";
+option java_package = "org.eclipse.uprotocol.core.udiscovery.v3";
 option java_outer_classname = "UDiscoveryProto";
 option java_multiple_files = true;
 
@@ -45,7 +45,7 @@ service uDiscovery {
   // 2. code.NOT_FOUND: No matching UUris were found
   // 3. code.INVALID_ARGUMENT: The passed UUri is invalid
   // 4. code.PERMISSION_DENIED: The caller does not have permission to perform the query
-  rpc LookupUri(UUri) returns (LookupUriResponse) {
+  rpc LookupUri(v1.UUri) returns (LookupUriResponse) {
     option (method_id) = 1;
   }
 
@@ -325,14 +325,14 @@ message NotificationsRequest {
 // Request message passed to ResolveUri() API to resolve the missing names or numbers.
 message ResolveUriRequest {
   // The URI to resolve containing only names or numbers
-  UUri uri = 1;
+  v1.UUri uri = 1;
 }
 
 
 // Response message returned from ResolveUri() API containing a UUri and the 
 // status of the resolution.
 message ResolveUriResponse {
-  UUri uri = 1;                 // Resolved UUri  
+  v1.UUri uri = 1;                 // Resolved UUri  
   google.rpc.Status status = 3; // Return code for the rpc call
 }
 
@@ -340,7 +340,7 @@ message ResolveUriResponse {
 // Return value from LookupUri() API that contains the batch of Uris for the 
 // lookup and status from the API call
 message LookupUriResponse {
-  UUriBatch uris = 1;           // Batch of Uris
+  v1.UUriBatch uris = 1;           // Batch of Uris
   google.rpc.Status status = 2; // Return code for the rpc call
 }
 

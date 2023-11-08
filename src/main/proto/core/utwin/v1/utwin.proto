@@ -20,14 +20,14 @@
  */
 syntax = "proto3";
 
-package uprotocol.v1.core.utwin.v1;
+package uprotocol.core.utwin.v1;
 
 import "google/rpc/status.proto";
 import "options.proto";
 import "uri.proto";
 import "spec.proto"; // CloudEvents proto
 
-option java_package = "org.eclipse.uprotocol.v1.core.utwin.v1";
+option java_package = "org.eclipse.uprotocol.core.utwin.v1";
 option java_outer_classname = "UTwinProto";
 option java_multiple_files = true;
 
@@ -43,7 +43,7 @@ service uTwin {
   // and the event itself if uTwin was able to fetch it. uTwin will also return 
   // status for those events that it was unable to fetch (i.e. due to NOT_FOUND 
   // or PERMISSION_DENIED.<br>
-  rpc GetLastEvents(UUriBatch) returns (GetLastEventsResponse) {
+  rpc GetLastEvents(uprotocol.v1.UUriBatch) returns (GetLastEventsResponse) {
     option (method_id) = 1;
   }
 
@@ -67,7 +67,7 @@ service uTwin {
 // Response Event that contains the status and event per topic
 message GetLastEventResponse {
   // Topic that was requested to be fetched
-  UUri topic = 1;
+  uprotocol.v1.UUri topic = 1;
 
   // Status (success or not) when fetching the last event for said topic
   google.rpc.Status status = 2;
