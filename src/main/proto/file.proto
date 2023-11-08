@@ -48,13 +48,13 @@ message FileBatch {
 
 // File Checksum
 message Checksum {
-  // Checksum type
-  enum Type {
-    MD5 = 0;    // MD5SUM
-    SHA1 = 1;   // SHA1SUM
-  }
-
-  Type type = 1;      // Type of Checksum
+  ChecksumType type = 1;      // Type of Checksum
   bytes value = 2;    // The checksum value
 }
- 
+
+// Checksum type
+enum ChecksumType {
+  CHECKSUM_TYPE_UNSPECIFIED = 0; // Unspecified
+  CHECKSUM_TYPE_MD5 = 1;    // MD5SUM
+  CHECKSUM_TYPE_SHA1 = 2;   // SHA1SUM
+}
