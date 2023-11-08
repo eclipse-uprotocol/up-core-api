@@ -73,36 +73,40 @@ message UAttributes {
 }
 
 
-/**
- * uProtocol defines message types. Using the message type, validation can be performed to ensure transport
- * validity of the data in the {@link UAttributes}.
- */
+// uProtocol defines message types. Using the message type, validation can be performed to ensure transport
+// validity of the data in the {@link UAttributes}.
 enum UMessageType {
-    PUBLISH = 0;    // Publish or notification
-    REQUEST = 1;    // Request 
-    RESPONSE = 2;   // Response
+    UMESSAGE_TYPE_UNSPECIFIED = 0; // Unspecified message type
+    UMESSAGE_TYPE_PUBLISH = 1;    // Publish or notification
+    UMESSAGE_TYPE_REQUEST = 2;    // Request 
+    UMESSAGE_TYPE_RESPONSE = 3;   // Response
 }
 
 
-enum UPriority{
+// uProtocol Priority as defined in 
+// https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/qos.adoc[uProtocol Prioritization]
+enum UPriority {
+    // Unspecified priority
+    UPRIORITY_UNSPECIFIED = 0;
+
     // Low Priority. No bandwidth assurance such as File Transfer.
-    CS0 = 0;
+    UPRIORITY_CS0 = 1;
 
     // Standard, undifferentiated application such as General (unclassified).
-    CS1 = 1;
+    UPRIORITY_CS1 = 2;
 
     // Operations, Administration, and Management such as Streamer messages (sub, connect, etc…)
-    CS2 = 2;
+    UPRIORITY_CS2 = 3;
 
     // Multimedia streaming such as Video Streaming
-    CS3 = 3;
+    UPRIORITY_CS3 = 4;
 
     // Real-time interactive such as High priority (rpc events)
-    CS4 = 4;
+    UPRIORITY_CS4 = 5;
 
     // Signaling such as Important
-    CS5 = 5;
+    UPRIORITY_CS5 = 6;
 
     // Network control such as Safety Critical
-    CS6 = 6;
+    UPRIORITY_CS6 = 7;
 }
