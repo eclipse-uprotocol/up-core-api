@@ -23,7 +23,7 @@
  package uprotocol.v1;
 
  option java_package = "org.eclipse.uprotocol.v1";
- option java_outer_classname = "SerializationHintProto";
+ option java_outer_classname = "UPayloadProto";
  option java_multiple_files = true;
 
 
