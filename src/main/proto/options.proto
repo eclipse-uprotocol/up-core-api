@@ -41,17 +41,29 @@ extend google.protobuf.ServiceOptions {
 
   // Globally unique service id
   uint32 id = 50103;
+
+  // Code Access Permission (CAP) Level for the uE
+  uint32 permission_level = 50104;
 }
+
 
 extend google.protobuf.MethodOptions {
   // RPC method id (unique within containing service)
   optional uint32 method_id = 50200;
+  // Code Access Permission (CAP) Level for the method
+  uint32 method_permission_level = 50201;
 }
+
+
 extend google.protobuf.MessageOptions {
   // Topic base id (unique within containing service)
   // The topic base id is added to a resource id to form a specific topic id.
   optional uint32 base_topic_id = 50300;
+  // Code Access Permission (CAP) Level for the topic
+  uint32 topic_permission_level = 50301;
 }
+
+
 extend google.protobuf.FieldOptions {
   // Name mask for exported resources
   optional string resource_name_mask = 50400;

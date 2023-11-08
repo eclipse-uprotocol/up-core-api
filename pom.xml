@@ -5,7 +5,7 @@
     <artifactId>uprotocol-core-api</artifactId>
     <name>uProtocol Core uEs API</name>
     <description>This project contains the built artifacts for core uProtocol services (uSubscription, uDiscovery, uTwin, etc..). Artifacts include language specific messages and client/server stubs</description>
-    <version>1.4.30-SNAPSHOT</version>
+    <version>1.5.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <url>https://github.com/eclipse-uprotocol/uprotocol-core-api/</url>
 
@@ -66,12 +66,24 @@
                         <goals>
                             <goal>compile</goal>
                             <goal>compile-cpp</goal>
+                            <goal>compile-python</goal>
                         </goals>
                     </execution>
+                     <execution>
+                        <id>compile-kt</id>
+                        <goals>
+                        <goal>compile-custom</goal>
+                        </goals>
+                        <configuration>
+                            <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}</protocArtifact>
+                            <outputDirectory>${project.build.directory}/generated-sources/protobuf/kotlin</outputDirectory>
+                            <pluginId>kotlin</pluginId>
+                        </configuration>
+                    </execution>
                 </executions>
-                <configuration>
-                    <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}</protocArtifact>
-                </configuration>
+                    <configuration>
+                            <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}</protocArtifact>
+                    </configuration>
             </plugin>                 
 
             <plugin>
@@ -120,6 +132,20 @@
 
     <dependencyManagement>
         <dependencies>
+
+            <dependency>
+                <groupId>com.google.errorprone</groupId>
+                <artifactId>error_prone_annotations</artifactId>
+                <version>2.11.0</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.checkerframework</groupId>
+                <artifactId>checker-qual</artifactId>
+                <version>3.12.0</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.google.protobuf</groupId>
                 <artifactId>protobuf-bom</artifactId>
@@ -143,6 +169,12 @@
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-kotlin</artifactId>
+            <version>${protobuf.version}</version>
         </dependency>
 
         <dependency>
@@ -172,12 +204,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.google.truth.extensions</groupId>
-            <artifactId>truth-proto-extension</artifactId>
-            <version>1.1</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     

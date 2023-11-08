@@ -23,8 +23,8 @@ syntax = "proto3";
 package uprotocol.core.utwin.v1;
 
 import "google/rpc/status.proto";
-import "topic.proto";
 import "options.proto";
+import "uri.proto";
 import "spec.proto"; // CloudEvents proto
 
 option java_package = "org.eclipse.uprotocol.core.utwin.v1";
@@ -38,17 +38,12 @@ service uTwin {
   option (version_minor) = 0;
   option (id) = 26;
 
-  // A uE calls this API to retrieve the last event that was published on Topic
-  // If the uTwin succeeds in retrieving the event, the response is set as follows:
-  // - status.Code is set to OK,
-  // - the event field contains the last event
-  // The event is retrieved either from its own internal storage, or by explicitly
-  // requesting from the uE "owning" the Topic to publish a new event that the uTwin 
-  // will subsequently receive
-  // If uTwin fails to retrieve the last event:
-  // - status.Code = NOT_FOUND | PERMISSION_DENIED
-  // - event is left empty
-  rpc GetLastEvent(Topic) returns (GetLastEventResponse) {
+  // A uE calls this API to retrieve the last event for a given set of topics.<br>
+  // What is returned is a list of EventResponse with the status for event retreival
+  // and the event itself if uTwin was able to fetch it. uTwin will also return 
+  // status for those events that it was unable to fetch (i.e. due to NOT_FOUND 
+  // or PERMISSION_DENIED.<br>
+  rpc GetLastEvents(uprotocol.v1.UUriBatch) returns (GetLastEventsResponse) {
     option (method_id) = 1;
   }
 
@@ -68,11 +63,22 @@ service uTwin {
 
 }
 
-// Message returned by the rpc GetLastEvent
-// status indicates if the rpc succeeded, and if not, provides insights
-// by return specific error codes (see comment on the rpc itself)
-// event contains the CloudEvent that was requested
+
+// Response Event that contains the status and event per topic
 message GetLastEventResponse {
-  google.rpc.Status status = 1;
-  io.cloudevents.v1.CloudEvent event = 2;
+  // Topic that was requested to be fetched
+  uprotocol.v1.UUri topic = 1;
+
+  // Status (success or not) when fetching the last event for said topic
+  google.rpc.Status status = 2;
+
+  // Event when the topic has been fetched successfully, otherwise empty
+  io.cloudevents.v1.CloudEvent event = 3;
+}
+
+
+// Message returned by the rpc GetLastEvents.
+message GetLastEventsResponse {
+  // List of one or more events and the results for fetching that topic
+  repeated GetLastEventResponse responses = 2;
 }

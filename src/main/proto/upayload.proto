@@ -2,7 +2,7 @@
  * Copyright (c) 2023 General Motors GTO LLC
  *
  * Licensed to the Apache Software Foundation (ASF) under one
-  * or more contributor license agreements.  See the NOTICE file
+ * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
  * regarding copyright ownership.  The ASF licenses this file
  * to you under the Apache License, Version 2.0 (the
@@ -18,21 +18,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-syntax = "proto3";
+ syntax = "proto3";
 
-package uprotocol;
+ package uprotocol.v1;
 
-import "google/protobuf/any.proto";
+ option java_package = "org.eclipse.uprotocol.v1";
+ option java_outer_classname = "UPayloadProto";
+ option java_multiple_files = true;
 
-option java_package = "org.eclipse.uprotocol";
-option java_multiple_files = true;
 
-
-// Topic Message
-message Topic {
-  // uProtocol formatted topic URI
-  string uri = 1;
-
-  // Any additional details needed
-  repeated google.protobuf.Any details = 2;
+// The Serialization format for the data stored in uPayload.
+enum UPayloadFormat {
+    UPAYLOAD_FORMAT_UNSPECIFIED = 0;    // Payload format is not set
+    UPAYLOAD_FORMAT_PROTOBUF = 1;       // Protobuf serialization format
+    UPAYLOAD_FORMAT_JSON = 2;           // JSON serialization format
+    UPAYLOAD_FORMAT_SOMEIP = 3;         // Basic SOME/IP serialization format
+    UPAYLOAD_FORMAT_SOMEIP_TLV = 4;     // SOME/IP TLV format
+    UPAYLOAD_FORMAT_RAW = 5;            // RAW (binary) format
+    UPAYLOAD_FORMAT_TEXT = 6;           // Text format
 }

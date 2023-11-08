@@ -1,0 +1,112 @@
+/*
+ * Copyright (c) 2023 General Motors GTO LLC
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+ syntax = "proto3";
+
+ package uprotocol.v1;
+
+ import "uri.proto";
+ import "uuid.proto";
+
+ option java_package = "org.eclipse.uprotocol.v1";
+ option java_outer_classname = "UAttributesProto";
+ option java_multiple_files = true;
+
+
+// uProtocol Header attributes that are common for all transports. <br>
+// The UAttributes message holds routing and UMessage attributes such as priority, permission, communication
+// status, etc....
+message UAttributes {
+    // Required unique message identifier per
+    // https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/uuid.adoc[uProtocol UUID]
+    UUID id = 1;
+
+    // Message type (publish, request, response)
+    UMessageType type = 2;
+
+    // Destination UUri for a message used for unicast message types 
+    // (notification, request, response)
+    optional UUri sink = 3;
+
+
+    // Message priority per 
+    // https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/qos.adoc[uProtocol Prioritization]
+    UPriority priority = 4;
+
+    // TTL is How long this message should live for after it was generated (in milliseconds).
+    // Event expires when:
+    // \$t_current > t_{id} + ttl\$
+    optional int32 ttl = 5;
+    
+    // Permission level per https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/permissions.adoc[Permissions]
+    optional int32 permission_level = 6;
+
+    // Communication error attribute populated by uP-L2 dispatchers only when an error 
+    // has occurred in the delivery of RPC request or response events. 
+    // The contents of this attribute, if present, is the unsigned integer representation of
+    // google.rpc.Code
+    optional int32 commstatus = 7;
+
+    // The correlation ID (UUDI) passed for response type messages to corelate the 
+    // response to a request.
+    optional UUID reqid = 8;
+
+    // Authorization token used for TAP per https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/permissions.adoc[Permissions]
+    optional string token = 9;
+}
+
+
+// uProtocol defines message types. Using the message type, validation can be performed to ensure transport
+// validity of the data in the {@link UAttributes}.
+enum UMessageType {
+    UMESSAGE_TYPE_UNSPECIFIED = 0; // Unspecified message type
+    UMESSAGE_TYPE_PUBLISH = 1;    // Publish or notification
+    UMESSAGE_TYPE_REQUEST = 2;    // Request 
+    UMESSAGE_TYPE_RESPONSE = 3;   // Response
+}
+
+
+// uProtocol Priority as defined in 
+// https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/qos.adoc[uProtocol Prioritization]
+enum UPriority {
+    // Unspecified priority
+    UPRIORITY_UNSPECIFIED = 0;
+
+    // Low Priority. No bandwidth assurance such as File Transfer.
+    UPRIORITY_CS0 = 1;
+
+    // Standard, undifferentiated application such as General (unclassified).
+    UPRIORITY_CS1 = 2;
+
+    // Operations, Administration, and Management such as Streamer messages (sub, connect, etc…)
+    UPRIORITY_CS2 = 3;
+
+    // Multimedia streaming such as Video Streaming
+    UPRIORITY_CS3 = 4;
+
+    // Real-time interactive such as High priority (rpc events)
+    UPRIORITY_CS4 = 5;
+
+    // Signaling such as Important
+    UPRIORITY_CS5 = 6;
+
+    // Network control such as Safety Critical
+    UPRIORITY_CS6 = 7;
+}
