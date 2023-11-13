@@ -124,8 +124,9 @@ message SubscribeAttributes {
 
 // Subscriber Identification Information
 message SubscriberInfo {
-  // Fully qualified uProtocol subscriber URI, ex. `up://device.domain/com.gm.app.hartley`
-  string uri = 1;
+  // subscriber URI containig the names and numbers of the 
+  // uE subscribing. Example represented in long form: `//device.domain/com.gm.app.hartley`
+  v1.UUri uri = 1;
 
   // Any additional device specific subscriber information
   repeated google.protobuf.Any details = 2;
