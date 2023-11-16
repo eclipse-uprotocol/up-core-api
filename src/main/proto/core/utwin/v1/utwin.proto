@@ -27,7 +27,7 @@ syntax = "proto3";
 package uprotocol.core.utwin.v1;
 
 import "google/rpc/status.proto";
-import "options.proto";
+import "uprotocol_options.proto";
 import "uri.proto";
 import "spec.proto"; // CloudEvents proto
 

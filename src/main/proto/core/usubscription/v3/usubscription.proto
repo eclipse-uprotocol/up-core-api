@@ -31,7 +31,7 @@ import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 import "google/rpc/code.proto";
 import "uri.proto";
-import "options.proto";
+import "uprotocol_options.proto";
 
 option java_package = "org.eclipse.uprotocol.core.usubscription.v3";
 option java_outer_classname = "USubscriptionProto";
