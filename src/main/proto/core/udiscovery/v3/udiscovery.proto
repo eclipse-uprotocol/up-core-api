@@ -105,7 +105,7 @@ service uDiscovery {
 
 
   // Register to receive Notifications to changes to one of more Nodes. The changes
-  // are published on the notification topic: '/core.udiscovery/3/nodes#Update'
+  // are published on the notification topic: '/core.udiscovery/3/nodes#Notification'
   rpc RegisterForNotifications(NotificationsRequest) returns (google.rpc.Status) {
     option (method_id) = 8;
   }
