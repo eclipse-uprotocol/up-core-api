@@ -17,10 +17,6 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
- * SPDX-FileType: SOURCE
- * SPDX-FileCopyrightText: 2023 General Motors GTO LLC
- * SPDX-License-Identifier: Apache-2.0
  */
 syntax = "proto3";
 
@@ -28,8 +24,6 @@ package uprotocol.core.usubscription.v3;
 
 import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
-import "google/rpc/status.proto";
-import "google/rpc/code.proto";
 import "uri.proto";
 import "options.proto";
 
@@ -58,7 +52,7 @@ service uSubscription {
 
   // The consumer no longer wishes to subscribe to a topic so it issues an
   // explicit unsubscribe request.
-  rpc Unsubscribe(UnsubscribeRequest) returns (google.rpc.Status) {
+  rpc Unsubscribe(UnsubscribeRequest) returns (SubscriptionResponse) {
     option (method_id) = 2;
   }
 
@@ -70,25 +64,25 @@ service uSubscription {
 
   //  API called by producers to register a topic. This API
   // informs the Subscription Service that to create the topic and it is ready to publish.
-  rpc CreateTopic(CreateTopicRequest) returns (google.rpc.Status) {
+  rpc CreateTopic(CreateTopicRequest) returns (SubscriptionResponse) {
     option (method_id) = 4;
   }
 
   // Request deprecation of a topic. Producers call this to inform the uSubscription
   // that it will no longer produce to said topic. The topic is flagged as deprcated
   // which
-  rpc DeprecateTopic(DeprecateTopicRequest) returns (google.rpc.Status) {
+  rpc DeprecateTopic(DeprecateTopicRequest) returns (SubscriptionResponse) {
     option (method_id) = 5;
   }
 
   // Register to receive subscription change notifications that are published on the
   // 'up:/core.usubscription/3/subscriptions#Update'
-  rpc RegisterForNotifications(NotificationsRequest) returns (google.rpc.Status) {
+  rpc RegisterForNotifications(NotificationsRequest) returns (SubscriptionResponse) {
     option (method_id) = 6;
   }
 
   // Unregister for subscription change events
-  rpc UnregisterForNotifications(NotificationsRequest) returns (google.rpc.Status) {
+  rpc UnregisterForNotifications(NotificationsRequest) returns (SubscriptionResponse) {
     option (method_id) = 7;
   }
 
@@ -104,7 +98,7 @@ service uSubscription {
   // reset).
   // **__NOTE:__** This is a private API only for uSubscription services,
   // uEs can call Unsubscribe() to flush their own subscriptions.
-  rpc Reset(ResetRequest) returns (google.rpc.Status) {
+  rpc Reset(ResetRequest) returns (SubscriptionResponse) {
     option (method_id) = 9;
   }
 }
@@ -151,7 +145,7 @@ message SubscriptionStatus {
   State state = 1;
 
   // The Subscription status code
-  google.rpc.Code code = 2;
+  int32 code = 2;
 
   // The Subscription status message
   string message = 3;
@@ -230,7 +224,7 @@ message FetchSubscribersResponse {
   optional bool has_more_records = 2;
 
   // Status of the query
-  google.rpc.Status status = 3;
+  int32 status = 3;
 }
 
 
@@ -278,7 +272,7 @@ message FetchSubscriptionsResponse {
   optional bool has_more_records = 2;
 
   // Status of the query
-  google.rpc.Status status = 3;
+  int32 status = 3;
 }
 
 
