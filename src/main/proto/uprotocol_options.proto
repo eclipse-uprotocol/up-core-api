@@ -27,7 +27,6 @@ syntax = "proto3";
 package uprotocol;
 
 import "google/protobuf/descriptor.proto";
-import "units.proto";
 
 option java_package = "org.eclipse.uprotocol";
 option java_multiple_files = true;
@@ -72,21 +71,4 @@ extend google.protobuf.FieldOptions {
   // Name mask for exported resources
   optional string resource_name_mask = 50400;
 
-  // Marks a field as readonly
-  optional bool readonly = 50401;
-
-  // Marks a field as writeonly
-  optional bool writeonly = 50402;
-
-  // Field units
-  optional Units unit = 50403;
-
-  // Max value
-  optional double max_value = 50404;
-
-  // Min Value
-  optional double min_value = 50405;
-
-  // Default Value
-  optional double default_value = 50407;
 }
