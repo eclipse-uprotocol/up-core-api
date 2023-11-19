@@ -1,36 +1,22 @@
-project(uprotocol-core-api LANGUAGES CXX)
-
 cmake_minimum_required(VERSION 3.18)
+project(uprotocol-core-api LANGUAGES CXX)
 
 find_package(Protobuf REQUIRED)
 
 file(GLOB_RECURSE PROTOBUF_DEFINITION_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.proto")
+
 set(PROTOBUF_INPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src/main/proto/")
 set(PROTOBUF_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/src/main/proto")
 
-if (NOT EXISTS "${PROTOBUF_OUTPUT_DIRECTORY}")
-
-    set(PROTOBUF_ROOT_OUT "${CMAKE_CURRENT_BINARY_DIR}/src")
-    file(MAKE_DIRECTORY ${PROTOBUF_ROOT_OUT})
-
-    set(SUBDIRECTORIES
-        "${PROTOBUF_ROOT_OUT}/main"
-        "${PROTOBUF_ROOT_OUT}/main/proto")
-
-    foreach(subdir ${SUBDIRECTORIES})
-        file(MAKE_DIRECTORY ${subdir})
-    endforeach()
-
-endif ()
+file(MAKE_DIRECTORY ${PROTOBUF_OUTPUT_DIRECTORY})
 
 foreach(file ${PROTOBUF_DEFINITION_FILES})
     set(PROTOBUF_ARGUMENTS "-I=${PROTOBUF_INPUT_DIRECTORY}" "--cpp_out=${PROTOBUF_OUTPUT_DIRECTORY}" "${file}")
-    message("${PROTOBUF_ARGUMENTS}")
 
     execute_process(
         COMMAND protoc ${PROTOBUF_ARGUMENTS}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         RESULT_VARIABLE PROTOBUF_RESULT
-        OUTPUT_VARIABLE PROTOBUF_OUTPUT_VARIABLE
-    )
+        OUTPUT_VARIABLE PROTOBUF_OUTPUT_VARIABLE)
+
 endforeach()
