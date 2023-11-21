@@ -11,13 +11,22 @@ This project contains the core data models (UUri, UAttributes, etc..) and core s
 
 === How To Build?
 
-The Project uses maven to build the protobuf message. The target to build the code is:
+The Project uses maven/cmake to build the protobuf message. The target to build the code is:
 
+==== How To Build using maven?
 [source,bash]
 ----
 mvn verify -f "pom.xml"
 ----
 
+==== How To Build using cmake?
+----
+1. go to uproctol-core-api folder
+2. mkdir build
+3. cd build
+4. cmake ../
+5. The compiled protobuf files will be under the build folder
+----
 === How To Use?
 To pull the built (java) artifacts from maven central, add the following dependency to your pom.xml file:
 [source]
