@@ -26,8 +26,8 @@ syntax = "proto3";
 
 package uprotocol.core.utwin.v1;
 
-import "google/rpc/status.proto";
 import "uprotocol_options.proto";
+import "ustatus.proto";
 import "uri.proto";
 import "umessage.proto";
 
@@ -58,7 +58,7 @@ service uTwin {
   // - INVALID argument if uTwin encountered an issue with UMessage content (source field in particular) 
   // - PERMISSION_DENIED if requesting uE does not have permission to access the Topic
   // - RESOURCE_EXHAUSTED if uTwin has no more memory available to store new UMessages
-  rpc SetLastEvent(uprotocol.v1.UMessage) returns (google.rpc.Status) {
+  rpc SetLastEvent(uprotocol.v1.UMessage) returns (uprotocol.v1.UStatus) {
     option (method_id) = 2;
   }
 
@@ -71,7 +71,7 @@ message GetLastEventResponse {
   uprotocol.v1.UUri topic = 1;
 
   // Status (success or not) when fetching the last event for said topic
-  google.rpc.Status status = 2;
+  uprotocol.v1.UStatus status = 2;
 
   // Event when the topic has been fetched successfully, otherwise empty
   uprotocol.v1.UMessage event = 3;
