@@ -183,14 +183,6 @@
 
     
     <dependencies>
-
-        <!-- https://mvnrepository.com/artifact/io.cloudevents/cloudevents-protobuf -->
-        <dependency>
-            <groupId>io.cloudevents</groupId>
-            <artifactId>cloudevents-protobuf</artifactId>
-            <version>2.2.0</version>
-        </dependency>
-
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
