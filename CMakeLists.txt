@@ -6,9 +6,8 @@ if (EXISTS ${VCPKG})
     message(STATUS "Found VCPKG installation")
     set(CMAKE_TOOLCHAIN_FILE ${VCPKG}
             CACHE STRING "")
+    set(Protobuf_DIR "$ENV{HOME}/vcpkg/packages/protobuf_x64-linux/share/protobuf")
 endif ()
-
-set(Protobuf_DIR "$ENV{HOME}/vcpkg/packages/protobuf_x64-linux/share/protobuf")
 
 find_package(Protobuf REQUIRED)
 
