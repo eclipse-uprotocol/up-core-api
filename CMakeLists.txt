@@ -1,6 +1,15 @@
 cmake_minimum_required(VERSION 3.18)
 project(uprotocol-core-api LANGUAGES CXX)
 
+set(VCPKG $ENV{HOME}/vcpkg/scripts/buildsystems/vcpkg.cmake)
+if (EXISTS ${VCPKG})
+    message(STATUS "Found VCPKG installation")
+    set(CMAKE_TOOLCHAIN_FILE ${VCPKG}
+            CACHE STRING "")
+endif ()
+
+set(Protobuf_DIR "$ENV{HOME}/vcpkg/packages/protobuf_x64-linux/share/protobuf")
+
 find_package(Protobuf REQUIRED)
 
 file(GLOB_RECURSE PROTOBUF_DEFINITION_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.proto")
