@@ -38,8 +38,8 @@
 // It contains a UUri, UAttributes, and UPayload and is a way of representing a 
 // message that would be sent between two uEs.
 message UMessage {
-    // The source (address) of the message. For published events thi sis the producers publish topic
-    // for requests it is the calling uE respose topic (who sent the request). For requests this is the
+    // The source (address) of the message. For published events this is the producers publish topic
+    // for requests it is the calling uE respose topic (who sent the request). For responses this is the
     // method URI from the uService
     UUri source = 1;
 
