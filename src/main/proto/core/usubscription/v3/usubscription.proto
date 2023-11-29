@@ -195,6 +195,9 @@ message SubscriptionResponse {
   // Any platform (uDevice) specific additional event delivered configuration
   // information for how the subscriber should consume the published events.
   EventDeliveryConfig config = 2;
+
+  // Subscription topic passed to SubscriptionRequest
+  v1.UUri topic = 3;
 }
 
 
