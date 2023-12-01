@@ -9,14 +9,7 @@ image:https://img.shields.io/badge/License-Apache%202.0-blue.svg[License,link=ht
 This project contains the core data models (UUri, UAttributes, etc..) and core services definitions (uDiscovery, uSubscription, uTwin) of uProtocol. This project is used by other uprotocol projects such as the language specific SDKs and uLink library that extend the data model to add validators, serializers, and factory/builder methods.
 
 
-=== How To Build?
-
-The Project uses maven to build the protobuf message. The target to build the code is:
-
-[source,bash]
-----
-mvn verify -f "pom.xml"
-----
+== Java
 
 === How To Use?
 To pull the built (java) artifacts from maven central, add the following dependency to your pom.xml file:
@@ -26,6 +19,35 @@ To pull the built (java) artifacts from maven central, add the following depende
 <dependency>
     <groupId>org.eclipse.uprotocol</groupId>
     <artifactId>uprotocol-core-api</artifactId>
-    <version>1.5.0</version>
+    <version>1.5.4</version>
 </dependency>
 ----
+
+=== How to build?
+The Project uses maven to build the protobuf message. The target to build the code is:
+
+[source,bash]
+----
+mvn verify -f "pom.xml"
+----
+
+
+== C++
+
+We use conan package manager to pull in the protobuf dependency and CMake to build the code. Please follow https://conan.io/downloads for how to setup conan on your system
+
+=== How to build?
+
+Open a terminal and run the following commands:
+[source,bash]
+----
+# If you do not have a pre-configured conan profile, you can create one by running:
+conan profile detect
+
+# Fetch and build protobuf dependency
+conan install . --output-folder=build --build=missing
+----
+
+
+
+
