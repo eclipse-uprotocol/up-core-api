@@ -21,16 +21,18 @@
  * SPDX-FileType: SOURCE
  * SPDX-FileCopyrightText: 2023 General Motors GTO LLC
  * SPDX-License-Identifier: Apache-2.0
- */
- syntax = "proto3";
+*/
+syntax = "proto3";
 
- package uprotocol.v1;
+package uprotocol.v1;
 
- option java_package = "org.eclipse.uprotocol.v1";
- option java_outer_classname = "UPayloadProto";
- option java_multiple_files = true;
+import "uprotocol_options.proto";
 
- 
+option java_package = "org.eclipse.uprotocol.v1";
+option java_outer_classname = "UPayloadProto";
+option java_multiple_files = true;
+
+
 // UPayload Message <br>
 // UPayload is the data model for storing the data and metadata for what is being sent
 // between uEs. Data can be passed either by reference or value. If data is passed by
@@ -52,11 +54,24 @@ message UPayload {
 
 // The Serialization format for the data stored in uPayload.
 enum UPayloadFormat {
-    UPAYLOAD_FORMAT_UNSPECIFIED = 0;    // Payload format is not set
-    UPAYLOAD_FORMAT_PROTOBUF = 1;       // Protobuf serialization format
-    UPAYLOAD_FORMAT_JSON = 2;           // JSON serialization format
-    UPAYLOAD_FORMAT_SOMEIP = 3;         // Basic SOME/IP serialization format
-    UPAYLOAD_FORMAT_SOMEIP_TLV = 4;     // SOME/IP TLV format
-    UPAYLOAD_FORMAT_RAW = 5;            // RAW (binary) format
-    UPAYLOAD_FORMAT_TEXT = 6;           // Text format
+    // Payload format is not set
+    UPAYLOAD_FORMAT_UNSPECIFIED = 0;
+    
+    // Protobuf serialization format
+     UPAYLOAD_FORMAT_PROTOBUF = 1 [ (uprotocol.mime_type) = "application/x-protobuf" ];
+    
+    // JSON serialization format
+    UPAYLOAD_FORMAT_JSON = 2 [ (uprotocol.mime_type) = "application/json" ];
+
+    // Basic SOME/IP serialization format
+    UPAYLOAD_FORMAT_SOMEIP = 3 [ (uprotocol.mime_type) = "application/x-someip" ];
+
+    // SOME/IP TLV format
+    UPAYLOAD_FORMAT_SOMEIP_TLV = 4 [ (uprotocol.mime_type) = "application/x-someip_tlv" ];
+
+    // RAW (binary) format
+    UPAYLOAD_FORMAT_RAW = 5 [ (uprotocol.mime_type) = "application/octet-stream" ];
+
+    // Text format
+    UPAYLOAD_FORMAT_TEXT = 6 [ (uprotocol.mime_type) = "text/plain" ];
 }
