@@ -27,7 +27,7 @@
  package uprotocol.v1;
  
  option java_package = "org.eclipse.uprotocol.v1";
- option java_outer_classname = "UUIRProto";
+ option java_outer_classname = "UUIDProto";
  option java_multiple_files = true;
 
 
