@@ -65,7 +65,7 @@ message UAttributes {
     // Communication error attribute populated by uP-L2 dispatchers only when an error 
     // has occurred in the delivery of RPC request or response events. 
     // The contents of this attribute, if present, is the unsigned integer representation of
-    // google.rpc.Code
+    // UCode
     optional int32 commstatus = 7;
 
     // The correlation ID (UUDI) passed for response type messages to corelate the 
