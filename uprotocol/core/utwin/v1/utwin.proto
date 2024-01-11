@@ -42,44 +42,44 @@ service uTwin {
   option (version_minor) = 0;
   option (id) = 26;
 
-  // A uE calls this API to retrieve the last event for a given set of topics.<br>
-  // What is returned is a list of EventResponse with the status for event retreival
+  // A uE calls this API to retrieve the last uMessages for a given set of topics.<br>
+  // What is returned is a list of MessageResponse with the status for message retreival
   // and the event itself if uTwin was able to fetch it. uTwin will also return 
-  // status for those events that it was unable to fetch (i.e. due to NOT_FOUND 
+  // status for those messages that it was unable to fetch (i.e. due to NOT_FOUND 
   // or PERMISSION_DENIED.<br>
-  rpc GetLastEvents(uprotocol.v1.UUriBatch) returns (GetLastEventsResponse) {
+  rpc GetLastMessages(uprotocol.v1.UUriBatch) returns (GetLastMessagesResponse) {
     option (method_id) = 1;
   }
 
-  // A call to SetLastEvent (typically from uBus) to update the uTwin internal cache 
+  // A call to SetLasMessage (typically from uBus) to update the uTwin internal cache 
   // with a message for a given topic (UMessage.source). 
   // Return value status.Code is one of:
   // - OK if UMessage was successfully stored in uTwin
   // - INVALID argument if uTwin encountered an issue with UMessage content (source field in particular) 
   // - PERMISSION_DENIED if requesting uE does not have permission to access the Topic
   // - RESOURCE_EXHAUSTED if uTwin has no more memory available to store new UMessages
-  rpc SetLastEvent(uprotocol.v1.UMessage) returns (uprotocol.v1.UStatus) {
+  rpc SetLastMessage(uprotocol.v1.UMessage) returns (uprotocol.v1.UStatus) {
     option (method_id) = 2;
   }
 
 }
 
 
-// Response Event that contains the status and event per topic
-message GetLastEventResponse {
+// Response that contains the status and message per topic
+message MessageResponse {
   // Topic that was requested to be fetched
   uprotocol.v1.UUri topic = 1;
 
   // Status (success or not) when fetching the last event for said topic
   uprotocol.v1.UStatus status = 2;
 
-  // Event when the topic has been fetched successfully, otherwise empty
-  uprotocol.v1.UMessage event = 3;
+  // message when the topic has been fetched successfully, otherwise empty
+  uprotocol.v1.UMessage message = 3;
 }
 
 
-// Message returned by the rpc GetLastEvents.
-message GetLastEventsResponse {
-  // List of one or more events and the results for fetching that topic
-  repeated GetLastEventResponse responses = 2;
+// Message returned by the rpc GetLastMessages.
+message GetLastMessagesResponse {
+  // List of one or more messages and the results for fetching the message per topic
+  repeated MessageResponse responses = 2;
 }
