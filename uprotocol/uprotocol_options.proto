@@ -50,7 +50,7 @@ extend google.protobuf.ServiceOptions {
   uint32 permission_level = 50104;
 
   // UEntity topic
-  v1.UTopic topic = 50105;
+  repeated v1.UTopic topic = 50105;
 }
 
 

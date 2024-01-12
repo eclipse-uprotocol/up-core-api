@@ -45,10 +45,17 @@ service uSubscription {
 
   // Declaration of Published Topics for uSubscription Service
   option (topic) = {
-    name: "subscriptions";
-    instance: "";
-    id: 1001;
-    message: "Update"
+      name: "subscriptions";
+      instance: "";
+      id: 1001;
+      message: "Update"
+  };
+
+  option (topic) = {
+      name: "dummy";
+      instance: "";
+      id: 1002;
+      message: "Update"
   };
 
   // A consumer (application) calls this API to subscribe to a topic.
