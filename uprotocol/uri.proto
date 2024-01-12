@@ -26,6 +26,8 @@ syntax = "proto3";
 
 package uprotocol.v1;
 
+import "utopic.proto";
+
 option java_package = "org.eclipse.uprotocol.v1";
 option java_outer_classname = "UUriProto";
 option java_multiple_files = true;
@@ -46,8 +48,8 @@ message UUri {
   // Software Entity information (ex. name, version, id)
   UEntity entity = 2;
   
-  // Service Resource information (methods, topics, etc..)
-  UResource resource = 3;
+  // Service topic information (methods, published subjects, etc..)
+  v1.UTopic topic = 3;
 }
 
 
@@ -81,22 +83,6 @@ message UEntity {
   optional uint32 version_minor = 4; // optional minor version of the uEntity
 }
 
-
-// A service API - defined in the {@link UEntity} - has Resources and Methods. 
-// Both of these are represented by the UResource message.
-// A uResource represents a resource from a Service such as "door" and an optional
-// specific instance such as "front_left". In addition, it can optionally contain
-// the name of the resource Message type, such as "Door". The Message type matches
-// the protobuf service IDL that defines structured data types.
-// An UResource is something that can be manipulated/controlled/exposed by a service.
-// Resources are unique when prepended with UAuthority that represents the device and
-// UEntity that represents the service. 
-message UResource {
-  string name = 1;      // Name of the resource
-  optional string instance = 2;  // Instance of the resource
-  optional string message = 3;   // Message type for the resource
-  optional uint32 id = 4;        // Numerical representation of the UResource portion of the UUri
-}
 
 
 // Repeated list of URIs that can be used for batching APIs

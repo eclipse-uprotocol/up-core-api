@@ -27,6 +27,7 @@ syntax = "proto3";
 package uprotocol;
 
 import "google/protobuf/descriptor.proto";
+import "utopic.proto";
 
 option java_package = "org.eclipse.uprotocol";
 option java_multiple_files = true;
@@ -47,6 +48,9 @@ extend google.protobuf.ServiceOptions {
 
   // Code Access Permission (CAP) Level for the uE
   uint32 permission_level = 50104;
+
+  // UEntity topic
+  v1.UTopic topic = 50105;
 }
 
 
