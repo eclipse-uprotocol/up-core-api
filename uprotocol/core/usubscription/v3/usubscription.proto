@@ -329,8 +329,12 @@ message Update {
   // Subscribers subscription attributes
   SubscribeAttributes attributes = 4;
 
-  // Service meta-data option definitions - Resources
-  enum Resources { subscriptions = 0; }
+  // Resource Instances used for building the topics that can be subscribed to
+  enum Resources { 
+    option (base_id) = 1000; // the base ID
+    subscriptions = 0;
+    dummy = 1;
+  }
 }
 
 

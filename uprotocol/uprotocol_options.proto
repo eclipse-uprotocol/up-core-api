@@ -47,6 +47,7 @@ extend google.protobuf.ServiceOptions {
 
   // Code Access Permission (CAP) Level for the uE
   uint32 permission_level = 50104;
+
 }
 
 
@@ -76,4 +77,9 @@ extend google.protobuf.FieldOptions {
 extend google.protobuf.EnumValueOptions {
   // MIME type mapping
   optional string mime_type = 50500;
+}
+
+extend google.protobuf.EnumOptions {
+  // Base number for the id
+  optional uint32 base_id = 50600;
 }
