@@ -28,6 +28,7 @@
 
  import "uri.proto";
  import "uuid.proto";
+ import "uprotocol_options.proto";
 
  option java_package = "org.eclipse.uprotocol.v1";
  option java_outer_classname = "UAttributesProto";
@@ -81,9 +82,9 @@ message UAttributes {
 // validity of the data in the {@link UAttributes}.
 enum UMessageType {
     UMESSAGE_TYPE_UNSPECIFIED = 0; // Unspecified message type
-    UMESSAGE_TYPE_PUBLISH = 1;    // Publish or notification
-    UMESSAGE_TYPE_REQUEST = 2;    // Request 
-    UMESSAGE_TYPE_RESPONSE = 3;   // Response
+    UMESSAGE_TYPE_PUBLISH = 1 [(uprotocol.ce_name) = "pub.v1"];    // Publish or notification
+    UMESSAGE_TYPE_REQUEST = 2 [(uprotocol.ce_name) = "req.v1"];    // Request 
+    UMESSAGE_TYPE_RESPONSE = 3 [(uprotocol.ce_name) = "res.v1"];   // Response
 }
 
 
@@ -94,23 +95,23 @@ enum UPriority {
     UPRIORITY_UNSPECIFIED = 0;
 
     // Low Priority. No bandwidth assurance such as File Transfer.
-    UPRIORITY_CS0 = 1;
+    UPRIORITY_CS0 = 1 [(uprotocol.ce_name) = "CS0"];
 
     // Standard, undifferentiated application such as General (unclassified).
-    UPRIORITY_CS1 = 2;
+    UPRIORITY_CS1 = 2 [(uprotocol.ce_name) = "CS1"];
 
     // Operations, Administration, and Management such as Streamer messages (sub, connect, etc…)
-    UPRIORITY_CS2 = 3;
+    UPRIORITY_CS2 = 3 [(uprotocol.ce_name) = "CS2"];
 
     // Multimedia streaming such as Video Streaming
-    UPRIORITY_CS3 = 4;
+    UPRIORITY_CS3 = 4 [(uprotocol.ce_name) = "CS3"];
 
     // Real-time interactive such as High priority (rpc events)
-    UPRIORITY_CS4 = 5;
+    UPRIORITY_CS4 = 5 [(uprotocol.ce_name) = "CS4"];
 
     // Signaling such as Important
-    UPRIORITY_CS5 = 6;
+    UPRIORITY_CS5 = 6 [(uprotocol.ce_name) = "CS5"];
 
     // Network control such as Safety Critical
-    UPRIORITY_CS6 = 7;
+    UPRIORITY_CS6 = 7 [(uprotocol.ce_name) = "CS6"];
 }

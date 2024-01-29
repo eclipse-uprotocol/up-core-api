@@ -76,4 +76,7 @@ extend google.protobuf.FieldOptions {
 extend google.protobuf.EnumValueOptions {
   // MIME type mapping
   optional string mime_type = 50500;
+
+  // CloudEvent String representation of the uProtocol enum value
+  optional string ce_name = 50501;
 }
