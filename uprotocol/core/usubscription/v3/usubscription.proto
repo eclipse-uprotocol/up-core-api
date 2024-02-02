@@ -43,14 +43,6 @@ service uSubscription {
   option (version_minor) = 0;
   option (id) = 0;
 
-  // uSubscription Update Topic
-  option (topic) = {
-    id: 1000,
-    message: "Update",
-    resources: [ "subscriptions" ],
-    permission_level: 0
-  };
-
 
   // A consumer (application) calls this API to subscribe to a topic.
   // What is passed is the SubscriptionRequest message containing the topic, the
@@ -117,6 +109,34 @@ service uSubscription {
   }
 }
 
+/* Declaration of all topics for said service */
+enum Topic {
+  // Invalid Topic
+  TOPIC_INVALID = 0;
+
+  // Subscription Change notification topic
+  TOPIC_SUBSCRIPTION_CHANGE = 1 [(topic_metadata) = {
+      id: 1000,
+      message: "Update",
+      type: NOTIFICATION,
+      resources: [
+        "myResource1",
+        "MyResource2"
+      ],
+      permission_level: 0
+    }
+  ];
+
+  // Test Publish Topic
+  TOPIC_TEST_PUBLISH = 2 [(topic_metadata) = {
+      id: 1001,
+      message: "SubscriptionChange",
+      type: PUBLICATION,
+      permission_level: 0
+    }
+  ];
+
+};
 
 // Additional subscription configurations information
 message SubscribeAttributes {
