@@ -75,6 +75,9 @@ message UAttributes {
 
     // Authorization token used for TAP per https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/permissions.adoc[Permissions]
     optional string token = 9;
+
+    // Optional identifier used to correlate observability across related events
+    optional string traceparent = 10;
 }
 
 
