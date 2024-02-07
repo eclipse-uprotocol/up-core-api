@@ -58,9 +58,11 @@ message UUri {
 // is local.
 message UAuthority {
   optional string name = 1; // Domain & device name as a string
-  optional bytes ip = 2; 		// IPv4 or IPv6 Address in byte format
-  optional bytes id = 3;		// Unique ID for the device, could be a VIN, SHA 128, or any other identifier
-                            // *NOTE:* MAX length is 255 bytes
+  oneof number {
+    bytes ip = 2; 	// IPv4 or IPv6 Address in byte format
+    bytes id = 3;		// Unique ID for the device, could be a VIN, SHA 128, or any other identifier
+                    // *NOTE:* MAX length is 255 bytes
+  }
 }
 
 
