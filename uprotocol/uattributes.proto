@@ -53,7 +53,7 @@ message UAttributes {
 
     // Destination UUri for a message used for unicast message types 
     // (notification, request, response)
-    optional UUri sink = 4;
+    UUri sink = 4;
 
 
     // Message priority per 
@@ -76,7 +76,7 @@ message UAttributes {
 
     // The correlation ID (UUDI) passed for response type messages to corelate the 
     // response to a request.
-    optional UUID reqid = 9;
+    UUID reqid = 9;
 
     // Authorization token used for TAP per https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/permissions.adoc[Permissions]
     optional string token = 10;
