@@ -25,27 +25,14 @@
  syntax = "proto3";
 
  package uprotocol.v1;
-
- import "uattributes.proto";
- import "upayload.proto";
- import "uri.proto";
-
+ 
  option java_package = "org.eclipse.uprotocol.v1";
- option java_outer_classname = "UMessageProto";
+ option java_outer_classname = "UUIDProto";
  option java_multiple_files = true;
 
-// UMessage is the top-level message type for the uProtocol.
-// It contains a UUri, UAttributes, and UPayload and is a way of representing a 
-// message that would be sent between two uEs.
-message UMessage {
-    // The source (address) of the message. For published events this is the producers publish topic
-    // for requests it is the calling uE respose topic (who sent the request). For responses this is the
-    // method URI from the uService
-    UUri source = 1;
 
-    // uProtocol mandatory and optional attributes
-    UAttributes attributes = 2;
-
-    // Optional message payload containing the data to be sent
-    UPayload payload = 3;
+// The UUID datamodel per https://datatracker.ietf.org/doc/html/rfc4122[RFC 4122]
+ message UUID {
+    fixed64 msb = 1; // Most significant bits
+    fixed64 lsb = 2; // Least significant bits
 }

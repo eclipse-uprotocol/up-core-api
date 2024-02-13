@@ -28,6 +28,7 @@
 
  import "uri.proto";
  import "uuid.proto";
+ import "uprotocol_options.proto";
 
  option java_package = "org.eclipse.uprotocol.v1";
  option java_outer_classname = "UAttributesProto";
@@ -45,35 +46,43 @@ message UAttributes {
     // Message type (publish, request, response)
     UMessageType type = 2;
 
+    // The source (address) of the message. For published events this is the producers publish topic
+    // for requests it is the calling uE respose topic (who sent the request). For responses this is the
+    // method URI from the uService. 
+    UUri source = 3;
+
     // Destination UUri for a message used for unicast message types 
     // (notification, request, response)
-    optional UUri sink = 3;
+    UUri sink = 4;
 
 
     // Message priority per 
     // https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/qos.adoc[uProtocol Prioritization]
-    UPriority priority = 4;
+    UPriority priority = 5;
 
     // TTL is How long this message should live for after it was generated (in milliseconds).
     // Event expires when:
     // \$t_current > t_{id} + ttl\$
-    optional int32 ttl = 5;
+    optional int32 ttl = 6;
     
     // Permission level per https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/permissions.adoc[Permissions]
-    optional int32 permission_level = 6;
+    optional int32 permission_level = 7;
 
     // Communication error attribute populated by uP-L2 dispatchers only when an error 
     // has occurred in the delivery of RPC request or response events. 
     // The contents of this attribute, if present, is the unsigned integer representation of
-    // google.rpc.Code
-    optional int32 commstatus = 7;
+    // UCode
+    optional int32 commstatus = 8;
 
     // The correlation ID (UUDI) passed for response type messages to corelate the 
     // response to a request.
-    optional UUID reqid = 8;
+    UUID reqid = 9;
 
     // Authorization token used for TAP per https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/permissions.adoc[Permissions]
-    optional string token = 9;
+    optional string token = 10;
+
+    // Optional identifier used to correlate observability across related events
+    optional string traceparent = 11;
 }
 
 
@@ -81,9 +90,9 @@ message UAttributes {
 // validity of the data in the {@link UAttributes}.
 enum UMessageType {
     UMESSAGE_TYPE_UNSPECIFIED = 0; // Unspecified message type
-    UMESSAGE_TYPE_PUBLISH = 1;    // Publish or notification
-    UMESSAGE_TYPE_REQUEST = 2;    // Request 
-    UMESSAGE_TYPE_RESPONSE = 3;   // Response
+    UMESSAGE_TYPE_PUBLISH = 1 [(uprotocol.ce_name) = "pub.v1"];    // Publish or notification
+    UMESSAGE_TYPE_REQUEST = 2 [(uprotocol.ce_name) = "req.v1"];    // Request 
+    UMESSAGE_TYPE_RESPONSE = 3 [(uprotocol.ce_name) = "res.v1"];   // Response
 }
 
 
@@ -94,23 +103,23 @@ enum UPriority {
     UPRIORITY_UNSPECIFIED = 0;
 
     // Low Priority. No bandwidth assurance such as File Transfer.
-    UPRIORITY_CS0 = 1;
+    UPRIORITY_CS0 = 1 [(uprotocol.ce_name) = "CS0"];
 
     // Standard, undifferentiated application such as General (unclassified).
-    UPRIORITY_CS1 = 2;
+    UPRIORITY_CS1 = 2 [(uprotocol.ce_name) = "CS1"];
 
     // Operations, Administration, and Management such as Streamer messages (sub, connect, etc…)
-    UPRIORITY_CS2 = 3;
+    UPRIORITY_CS2 = 3 [(uprotocol.ce_name) = "CS2"];
 
     // Multimedia streaming such as Video Streaming
-    UPRIORITY_CS3 = 4;
+    UPRIORITY_CS3 = 4 [(uprotocol.ce_name) = "CS3"];
 
     // Real-time interactive such as High priority (rpc events)
-    UPRIORITY_CS4 = 5;
+    UPRIORITY_CS4 = 5 [(uprotocol.ce_name) = "CS4"];
 
     // Signaling such as Important
-    UPRIORITY_CS5 = 6;
+    UPRIORITY_CS5 = 6 [(uprotocol.ce_name) = "CS5"];
 
     // Network control such as Safety Critical
-    UPRIORITY_CS6 = 7;
+    UPRIORITY_CS6 = 7 [(uprotocol.ce_name) = "CS6"];
 }
