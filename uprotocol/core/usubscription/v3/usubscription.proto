@@ -127,7 +127,7 @@ message SubscribeAttributes {
   // If the desired sampling period set by the subscriber is lower than the original publisher's
   // publication period, the attribute is ignored.<br>
   // **__NOTE:__** If this attribute is missing, the sampling period is set by the publisher.
-  optional int32 sample_period_ms = 3;
+  optional uint32 sample_period_ms = 3;
 }
 
 
