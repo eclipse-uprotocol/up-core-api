@@ -118,6 +118,16 @@ message SubscribeAttributes {
   // Any additional producer specific information that the consumer must send
   // inside of a subscription request
   repeated google.protobuf.Any details = 2;
+
+  // Desired Sampling Period (measured in milliseconds) the subscriber wishes to receive events 
+  // for remote only topics. Device dispatchers (i.e. streamers) use this
+  // attribute to reduce the publication rates of events sent between devices.
+  // This attribute is commonly used for mobile/cloud subscribing to vehicle topics
+  // that are published at a high rate.<br>
+  // If the desired sampling period set by the subscriber is lower than the original publisher's
+  // publication period, the attribute is ignored.<br>
+  // **__NOTE:__** If this attribute is missing, the sampling period is set by the publisher.
+  optional uint32 sample_period_ms = 3;
 }
 
 
