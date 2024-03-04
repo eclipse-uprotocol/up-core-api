@@ -28,6 +28,7 @@
 
  import "uri.proto";
  import "uuid.proto";
+ import "ustatus.proto";
  import "uprotocol_options.proto";
 
  option java_package = "org.eclipse.uprotocol.v1";
@@ -61,7 +62,7 @@ message UAttributes {
     UPriority priority = 5;
 
     // TTL is How long this message should live for after it was generated (in milliseconds). If not present,
-    // the message is assumed to not timeout (should live forever)
+    // or 0 (zero), the message is assumed to not timeout (i.e. live forever).<br>
     // Event expires when:
     // \$t_current > t_{id} + ttl\$
     optional uint32 ttl = 6;
@@ -71,9 +72,8 @@ message UAttributes {
 
     // Communication error attribute populated by uP-L2 dispatchers only when an error 
     // has occurred in the delivery of RPC request or response events. 
-    // The contents of this attribute, if present, is the unsigned integer representation of
-    // UCode. If the attribute is not present, there is no communication error
-    optional uint32 commstatus = 8;
+    // If the attribute is not present, there is no communication error
+    optional UCode commstatus = 8;
 
     // The correlation ID (UUDI) passed for response type messages to corelate the 
     // response to a request.
