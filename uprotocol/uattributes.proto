@@ -87,6 +87,23 @@ message UAttributes {
 }
 
 
+// Message that defines a subset of UAttributes used for RPC Method invocation
+message CallOptions {
+    // Message priority per 
+    // https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/qos.adoc[uProtocol Prioritization]
+    UPriority priority = 1;
+
+    // TTL is How long this message should live for after it was generated (in milliseconds). If not present,
+    // or 0 (zero), the message is assumed to not timeout (i.e. live forever).<br>
+    // Event expires when:
+    // \$t_current > t_{id} + ttl\$
+    optional uint32 ttl = 2;
+    
+    // Authorization token used for TAP per https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/permissions.adoc[Permissions]
+    optional string token = 3;
+}
+
+
 // uProtocol defines message types. Using the message type, validation can be performed to ensure transport
 // validity of the data in the {@link UAttributes}.
 enum UMessageType {
