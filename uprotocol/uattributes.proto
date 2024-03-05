@@ -28,6 +28,7 @@
 
  import "uri.proto";
  import "uuid.proto";
+ import "ustatus.proto";
  import "uprotocol_options.proto";
 
  option java_package = "org.eclipse.uprotocol.v1";
@@ -60,19 +61,19 @@ message UAttributes {
     // https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/qos.adoc[uProtocol Prioritization]
     UPriority priority = 5;
 
-    // TTL is How long this message should live for after it was generated (in milliseconds).
+    // TTL is How long this message should live for after it was generated (in milliseconds). If not present,
+    // or 0 (zero), the message is assumed to not timeout (i.e. live forever).<br>
     // Event expires when:
     // \$t_current > t_{id} + ttl\$
-    optional int32 ttl = 6;
+    optional uint32 ttl = 6;
     
     // Permission level per https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/permissions.adoc[Permissions]
-    optional int32 permission_level = 7;
+    optional uint32 permission_level = 7;
 
     // Communication error attribute populated by uP-L2 dispatchers only when an error 
     // has occurred in the delivery of RPC request or response events. 
-    // The contents of this attribute, if present, is the unsigned integer representation of
-    // UCode
-    optional int32 commstatus = 8;
+    // If the attribute is not present, there is no communication error
+    optional UCode commstatus = 8;
 
     // The correlation ID (UUDI) passed for response type messages to corelate the 
     // response to a request.
@@ -83,6 +84,23 @@ message UAttributes {
 
     // Optional identifier used to correlate observability across related events
     optional string traceparent = 11;
+}
+
+
+// Message that defines a subset of UAttributes used for RPC Method invocation
+message CallOptions {
+    // Message priority per 
+    // https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/qos.adoc[uProtocol Prioritization]
+    UPriority priority = 1;
+
+    // TTL is How long this message should live for after it was generated (in milliseconds). If not present,
+    // or 0 (zero), the message is assumed to not timeout (i.e. live forever).<br>
+    // Event expires when:
+    // \$t_current > t_{id} + ttl\$
+    optional uint32 ttl = 2;
+    
+    // Authorization token used for TAP per https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/permissions.adoc[Permissions]
+    optional string token = 3;
 }
 
 
