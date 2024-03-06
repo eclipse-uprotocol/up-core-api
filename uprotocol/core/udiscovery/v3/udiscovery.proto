@@ -41,7 +41,15 @@ service uDiscovery {
   option (version_minor) = 0;
   option (id) = 1;
 
-   
+  // uDiscovery Node Change Notification
+  option (topic) = {
+    id: 1000,
+      message: "Notification",
+      resources: [ "nodes" ],
+      permission_level: 0
+  };
+
+    
 
   // Used by any uProtocol application or service to find service instances
   // locations. The passed UUri contains valid UEntity, UResource, and UAuthority information

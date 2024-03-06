@@ -27,6 +27,7 @@ syntax = "proto3";
 package uprotocol;
 
 import "google/protobuf/descriptor.proto";
+import "topic.proto";
 
 option java_package = "org.eclipse.uprotocol";
 option java_multiple_files = true;
@@ -47,6 +48,9 @@ extend google.protobuf.ServiceOptions {
 
   // Code Access Permission (CAP) Level for the uE
   uint32 permission_level = 50104;
+
+  // Service declared topics
+  repeated v1.Topic topic = 50105;
 }
 
 
@@ -73,40 +77,10 @@ extend google.protobuf.FieldOptions {
 
 }
 
-
-// the following is used to declare service level topics, what a service publishes
-message TopicMetadata {
-  // The topic id. *MUST* be unique within the containing service, *MUST* begin at 1000
-  uint32 id = 1;
-    
-  // protobuf.Message name that is emited by the published topic
-  string message = 2;
-
-  // Topic type
-  Type type = 3;
-
-  enum Type {
-    INVALID = 0;
-    PUBLICATION = 1;
-    NOTIFICATION = 2;
-  }
-  
-
-  // List of one or more resource names :
-  repeated string resources = 4;
-
-  // Code Access Permission (CAP) Level for the topic
-  optional int32 permission_level = 5;
-}
-
-
 extend google.protobuf.EnumValueOptions {
   // MIME type mapping
   optional string mime_type = 50500;
 
   // CloudEvent String representation of the uProtocol enum value
   optional string ce_name = 50501;
-
-  // Declaired topic metadata
-  optional TopicMetadata topic_metadata = 50502;
 }
