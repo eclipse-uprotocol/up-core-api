@@ -43,12 +43,11 @@ service uSubscription {
   option (version_minor) = 0;
   option (id) = 0;
 
-  // uSubscription Update Topic
-  option (topic) = {
-    id: 1000,
-    message: "Update",
-    resources: [ "subscriptions" ],
-    permission_level: 0
+  // uSubscription change Notification topic that sends the Update message
+  option (notification_topic) = {
+    id: 0x8000,
+    name: "SubscriptionChange",
+    message: "Update"
   };
 
 
