@@ -34,19 +34,19 @@ option java_multiple_files = true;
 // Service Options & Attributes
 extend google.protobuf.ServiceOptions {
   // Name of the service that can be used in uri
-  string name = 50100;
+  string name = 51100;
 
   // Semantic 2.0 major versioning
-  uint32 version_major = 50101;
+  uint32 version_major = 51101;
 
   // Semantic 2.0 minor versioning
-  uint32 version_minor = 50102;
+  uint32 version_minor = 51102;
 
   // Globally unique service id
-  uint32 id = 50103;
+  uint32 id = 51103;
 
   // Code Access Permission (CAP) Level for the uE
-  uint32 permission_level = 50104;
+  uint32 permission_level = 51104;
 
   // Service declared published topics
   repeated UServiceTopic publish_topic = 51105;
@@ -58,33 +58,33 @@ extend google.protobuf.ServiceOptions {
 
 extend google.protobuf.MethodOptions {
   // RPC method id (unique within containing service)
-  optional uint32 method_id = 50200;
+  optional uint32 method_id = 51200;
   // Code Access Permission (CAP) Level for the method
-  uint32 method_permission_level = 50201;
+  uint32 method_permission_level = 51201;
 }
 
 
 extend google.protobuf.MessageOptions {
   // Topic base id (unique within containing service)
   // The topic base id is added to a resource id to form a specific topic id.
-  optional uint32 base_topic_id = 50300;
+  optional uint32 base_topic_id = 51300;
   // Code Access Permission (CAP) Level for the topic
-  uint32 topic_permission_level = 50301;
+  uint32 topic_permission_level = 51301;
 }
 
 
 extend google.protobuf.FieldOptions {
   // Name mask for exported resources
-  optional string resource_name_mask = 50400;
+  optional string resource_name_mask = 51400;
 
 }
 
 extend google.protobuf.EnumValueOptions {
   // MIME type mapping
-  optional string mime_type = 50500;
+  optional string mime_type = 51500;
 
   // CloudEvent String representation of the uProtocol enum value
-  optional string ce_name = 50501;
+  optional string ce_name = 51501;
 }
 
 
