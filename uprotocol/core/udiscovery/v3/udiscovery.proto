@@ -41,6 +41,15 @@ service uDiscovery {
   option (version_minor) = 0;
   option (id) = 1;
 
+  // uDiscovery Node Change Notification that sends the Update message
+  option (notification_topic) = {
+    id: 0x8000,
+      name: "NodeChange",
+      message: "Notification"
+  };
+
+    
+
   // Used by any uProtocol application or service to find service instances
   // locations. The passed UUri contains valid UEntity, UResource, and UAuthority information
   // for a query.
@@ -271,8 +280,7 @@ message UpdatePropertyRequest {
 
 // Node Change Notification Message.
 // When uEs call RegisterForNotifications(), a Notification message is sent when the node either
-// changes, added, or removed. The topic used for the change notification is
-// '/core.udiscovery/3/nodes#Notification'.
+// changes, added, or removed.
 message Notification {
   // The URI to the node that has changed
   string uri = 1;

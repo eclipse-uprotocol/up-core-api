@@ -47,6 +47,12 @@ extend google.protobuf.ServiceOptions {
 
   // Code Access Permission (CAP) Level for the uE
   uint32 permission_level = 51104;
+
+  // Service declared published topics
+  repeated UServiceTopic publish_topic = 51105;
+
+  // uService declaired notification topics
+  repeated UServiceTopic notification_topic = 51106;
 }
 
 
@@ -79,4 +85,19 @@ extend google.protobuf.EnumValueOptions {
 
   // CloudEvent String representation of the uProtocol enum value
   optional string ce_name = 51501;
+}
+
+
+// the following is used to declare service level topics, what a service publishes
+message UServiceTopic {
+  // The topic id. <br>
+  // * *MUST* be unique within the uService scope
+  // * *MUST* start at 0x800h
+  uint32 id = 1;
+  
+  // Topic name represented as a string
+  string name = 2;
+
+  // Name of the protobuf.Message
+  string message = 3;
 }
