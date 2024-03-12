@@ -111,6 +111,8 @@ enum UMessageType {
     UMESSAGE_TYPE_PUBLISH = 1 [(uprotocol.ce_name) = "pub.v1"];    // Publish or notification
     UMESSAGE_TYPE_REQUEST = 2 [(uprotocol.ce_name) = "req.v1"];    // Request 
     UMESSAGE_TYPE_RESPONSE = 3 [(uprotocol.ce_name) = "res.v1"];   // Response
+    UMESSAGE_TYPE_NOTIFICATION = 4 [(uprotocol.ce_name) = "pub.v1"]; // Notification are identified in 
+                                                                    // CloudEvents as published events
 }
 
 
