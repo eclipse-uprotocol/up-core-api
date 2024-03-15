@@ -35,83 +35,121 @@
  option java_outer_classname = "UAttributesProto";
  option java_multiple_files = true;
 
-
-// uProtocol Header attributes that are common for all transports. <br>
-// The UAttributes message holds routing and UMessage attributes such as priority, permission, communication
-// status, etc....
+// Metadata describing a particular message's purpose, content and processing requirements.
+// Each type of message is described by a set of mandatory and optional attributes.
 message UAttributes {
-    // Required unique message identifier per
-    // https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/uuid.adoc[uProtocol UUID]
+    // A unique message identifier as defined by https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/uuid.adoc[uProtocol UUID].
+    // The timestamp contained in the UUID indicates the message's creation time.
     UUID id = 1;
 
-    // Message type (publish, request, response)
+    // This message's type which also indicates its purpose and determines contraints on the other properties.
     UMessageType type = 2;
 
-    // The source (address) of the message. For published events this is the producers publish topic
-    // for requests it is the calling uE respose topic (who sent the request). For responses this is the
-    // method URI from the uService. 
+    // The origin (address) of this message.
+    //
+    // Publish messages MUST have this property set to a URI representing the topic that this message is published to.
+    // Notification messages MUST have this property set to a URI representing the component that this notification originates from.
+    // RPC Request messages MUST have this property set to the URI that the service consumer expects to receive the response message at.
+    // RPC Response messages MUST have this property set to a URI identifying the method that has been invoked and which this message is the outcome of.
     UUri source = 3;
 
-    // Destination UUri for a message used for unicast message types 
-    // (notification, request, response)
+    // The destination (address) of this message.
+    //
+    // Publish messages MUST NOT have this property set to any value.
+    // Notification messages MUST have this property set to a URI representing the receiver of this notification.
+    // RPC Request messages MUST have this property set to a URI identifying the service provider's method to invoke.
+    // RPC Response messages MUST have this property set to the URI that the service consumer expects to receive this response message at.
     UUri sink = 4;
 
-
-    // Message priority per 
-    // https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/qos.adoc[uProtocol Prioritization]
+    // The QoS level that this message should be processed/delivered with. If not specified explicitly, the
+    // https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/qos.adoc#default-priority[default priority level] is assumed.
+    //
+    // RPC Request messages MUST have this property set to a value of `UPRIORITY_CS4` or higher.
+    // RPC Response messages MUST have this property set to the same value as that of the corresponding RPC Request message.
     UPriority priority = 5;
 
-    // TTL is How long this message should live for after it was generated (in milliseconds). If not present,
-    // or 0 (zero), the message is assumed to not timeout (i.e. live forever).<br>
-    // Event expires when:
-    // \$t_current > t_{id} + ttl\$
+    // The amount of time (in milliseconds) after which this message MUST NOT be delivered/processed anymore.
+    // A message MUST be considered expired, if this attribute is set to a positive value and
+    // \$t_{current} > t_{id} + ttl\$
+    //
+    // RPC Request messages MUST have this property set to a value > 0.
     optional uint32 ttl = 6;
     
-    // Permission level per https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/permissions.adoc[Permissions]
+    // The service consumer's permission level as defined in
+    // https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/permissions.adoc[Permissions].
+    //
+    // Publish, Notification and RPC Response messages MUST NOT have this property set to any value.
     optional uint32 permission_level = 7;
 
-    // Communication error attribute populated by uP-L2 dispatchers only when an error 
-    // has occurred in the delivery of RPC request or response events. 
-    // If the attribute is not present, there is no communication error
+    // A https://github.com/eclipse-uprotocol/up-core-api/blob/main/uprotocol/ustatus.proto[code] indicating an error that has occurred
+    // during the delivery of either an RPC Request or Response message.
+    // A value of `0` or no value indicates that there was no communication error.
+    //
+    // Publish, Notification and RPC Request messages MUST NOT have this property set to any value.
     optional UCode commstatus = 8;
 
-    // The correlation ID (UUDI) passed for response type messages to corelate the 
-    // response to a request.
+    // The identifier that a service consumer can use to correlate an RPC Repsonse message with its RPC Request.
+    //
+    // RPC Response messages MUST have this property set to the value of the `id` property of the request message
+    // that this is the response to.
+    // Publish, Notification and RPC Request messages MUST NOT have this property set to any value.
     UUID reqid = 9;
 
-    // Authorization token used for TAP per https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/permissions.adoc[Permissions]
+    // The service consumer's access token as defined in
+    // https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/permissions.adoc[Permissions].
+    //
+    // Publish, Notification and RPC Response messages MUST NOT have this property set to any value.
     optional string token = 10;
 
-    // Optional identifier used to correlate observability across related events
+    // A tracing identifier to be used for correlating messages across the system.
     optional string traceparent = 11;
 }
 
 
-// Message that defines a subset of UAttributes used for RPC Method invocation
+// A subset of UAttributes used for RPC method invocation.
 message CallOptions {
-    // Message priority per 
-    // https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/qos.adoc[uProtocol Prioritization]
+    // The QoS level that this request should be processed/delivered with.
+    //
+    // MUST be set to a value of `UPRIORITY_CS4` or higher.
     UPriority priority = 1;
 
-    // TTL is How long this message should live for after it was generated (in milliseconds). If not present,
-    // or 0 (zero), the message is assumed to not timeout (i.e. live forever).<br>
-    // Event expires when:
-    // \$t_current > t_{id} + ttl\$
-    optional uint32 ttl = 2;
+    // The amount of time (in milliseconds) after which this request MUST NOT be delivered/processed anymore.
+    // A request MUST be considered expired, if this attribute is set to a positive value and
+    // \$t_{current} > t_{id} + ttl\$
+    //
+    // MUST be set to a value > 0.
+    uint32 ttl = 2;
     
-    // Authorization token used for TAP per https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/permissions.adoc[Permissions]
+    // The service consumer's access token as defined in
+    // https://github.com/eclipse-uprotocol/uprotocol-spec/blob/main/basics/permissions.adoc[Permissions].
     optional string token = 3;
 }
 
 
-// uProtocol defines message types. Using the message type, validation can be performed to ensure transport
+// uProtocol defines different types of messages.
+// Using the message type, validation can be performed to ensure transport
 // validity of the data in the {@link UAttributes}.
 enum UMessageType {
-    UMESSAGE_TYPE_UNSPECIFIED = 0; // Unspecified message type
-    UMESSAGE_TYPE_PUBLISH = 1 [(uprotocol.ce_name) = "pub.v1"];    // Publish or notification
-    UMESSAGE_TYPE_REQUEST = 2 [(uprotocol.ce_name) = "req.v1"];    // Request 
-    UMESSAGE_TYPE_RESPONSE = 3 [(uprotocol.ce_name) = "res.v1"];   // Response
-    UMESSAGE_TYPE_NOTIFICATION = 4 [(uprotocol.ce_name) = "not.v1"]; // Notification
+    // Unspecified message type
+    UMESSAGE_TYPE_UNSPECIFIED = 0;
+    
+    // Publish
+    // A message that is used to notify all interested consumers of an event that has occurred.
+    UMESSAGE_TYPE_PUBLISH = 1 [(uprotocol.ce_name) = "pub.v1"];
+    
+    // RPC Request
+    // A message that is used by a service consumer to invoke one of a service provider's methods with some input data, expecting the service
+    // provider to reply with a response message.
+    UMESSAGE_TYPE_REQUEST = 2 [(uprotocol.ce_name) = "req.v1"];
+    
+    // RPC Response
+    // A message that is used by a service provider to send the outcome of processing a request message
+    // from a servcice consumer.
+    UMESSAGE_TYPE_RESPONSE = 3 [(uprotocol.ce_name) = "res.v1"];
+
+    // Notification
+    // A message that is used to inform a specific consumer about an event that has occurred.
+    UMESSAGE_TYPE_NOTIFICATION = 4 [(uprotocol.ce_name) = "not.v1"];
 }
 
 
