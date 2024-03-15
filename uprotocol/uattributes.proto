@@ -149,7 +149,7 @@ enum UMessageType {
 
     // Notification
     // A message that is used to inform a specific consumer about an event that has occurred.
-    UMESSAGE_TYPE_NOTIFICATION = 4 [(uprotocol.ce_name) = "not.v1"]; // Notification
+    UMESSAGE_TYPE_NOTIFICATION = 4 [(uprotocol.ce_name) = "not.v1"];
 }
 
 
