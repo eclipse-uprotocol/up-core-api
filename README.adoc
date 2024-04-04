@@ -1,3 +1,3 @@
 **PROJECT IS NOW READ ONLY** 
 
-up-core-api has merged with https://github.com/eclipse-uprotocol/up-spec[up-spec] so that the project specs and core apis can be released/labeled together. Please refer to https://github.com/eclipse-uprotocol/up-spec/up-core-api[up-spec/up-core-api] for more information.
+up-core-api has merged with https://github.com/eclipse-uprotocol/up-spec[up-spec] so that the project specs and core apis can be released/labeled together. Please refer to https://github.com/eclipse-uprotocol/up-spec/tree/main/up-core-api[up-spec/up-core-api] for more information.
